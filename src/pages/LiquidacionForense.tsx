@@ -53,24 +53,24 @@ export default function LiquidacionForense() {
   const [cases, setCases] = useState<CaseItem[]>([]);
   const [selectedCaseId, setSelectedCaseId] = useState<string>('');
 
-  // Datos del juicio
-  const [juzgado, setJuzgado] = useState('JUEZ CIVIL / MERCANTIL DE PRIMERA INSTANCIA');
+  // Datos del juicio (completamente limpios)
+  const [juzgado, setJuzgado] = useState('');
   const [expedienteNum, setExpedienteNum] = useState('');
   const [parteActora, setParteActora] = useState('');
   const [parteDemandada, setParteDemandada] = useState('');
   const [tipoJuicio, setTipoJuicio] = useState('JUICIO EJECUTIVO MERCANTIL');
 
-  // Parámetros de la deuda
-  const [suertePrincipal, setSuertePrincipal] = useState<number>(150000);
-  const [fechaInicioMora, setFechaInicioMora] = useState<string>('2024-01-15');
+  // Parámetros de la deuda (completamente limpios sin datos residuales)
+  const [suertePrincipal, setSuertePrincipal] = useState<string>('');
+  const [fechaInicioMora, setFechaInicioMora] = useState<string>('');
   const [fechaCorte, setFechaCorte] = useState<string>(new Date().toISOString().split('T')[0]);
   
   // Tasas
   const [tipoTasaMoratoria, setTipoTasaMoratoria] = useState<'mensual' | 'anual'>('mensual');
-  const [tasaMoratoriaInput, setTasaMoratoriaInput] = useState<number>(4.0); // 4% mensual por defecto
+  const [tasaMoratoriaInput, setTasaMoratoriaInput] = useState<string>('');
   
   const [aplicaOrdinario, setAplicaOrdinario] = useState<boolean>(false);
-  const [tasaOrdinariaInput, setTasaOrdinariaInput] = useState<number>(1.5);
+  const [tasaOrdinariaInput, setTasaOrdinariaInput] = useState<string>('');
   
   const [aplicaIva, setAplicaIva] = useState<boolean>(false);
 
@@ -83,6 +83,27 @@ export default function LiquidacionForense() {
   const [copied, setCopied] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const [activeTab, setActiveTab] = useState<'calculadora' | 'desglose' | 'escrito'>('calculadora');
+
+  // Función para resetear / limpiar toda la calculadora
+  const handleLimpiarTodo = () => {
+    setSelectedCaseId('');
+    setJuzgado('');
+    setExpedienteNum('');
+    setParteActora('');
+    setParteDemandada('');
+    setTipoJuicio('JUICIO EJECUTIVO MERCANTIL');
+    setSuertePrincipal('');
+    setFechaInicioMora('');
+    setFechaCorte(new Date().toISOString().split('T')[0]);
+    setTipoTasaMoratoria('mensual');
+    setTasaMoratoriaInput('');
+    setAplicaOrdinario(false);
+    setTasaOrdinariaInput('');
+    setAplicaIva(false);
+    setAbonos([]);
+    setNuevoAbonoFecha('');
+    setNuevoAbonoMonto('');
+  };
 
   // Cargar expedientes para vinculación
   useEffect(() => {
@@ -120,18 +141,30 @@ export default function LiquidacionForense() {
   };
 
   // Convertir tasa a mensual y anual normalizadas
+  const valTasaMora = parseFloat(tasaMoratoriaInput) || 0;
+  const valSuertePrincipal = parseFloat(suertePrincipal) || 0;
+  const valTasaOrd = parseFloat(tasaOrdinariaInput) || 0;
+
   const tasaMoratoriaMensual = useMemo(() => {
-    return tipoTasaMoratoria === 'mensual' ? tasaMoratoriaInput : tasaMoratoriaInput / 12;
-  }, [tasaMoratoriaInput, tipoTasaMoratoria]);
+    return tipoTasaMoratoria === 'mensual' ? valTasaMora : valTasaMora / 12;
+  }, [valTasaMora, tipoTasaMoratoria]);
 
   const tasaMoratoriaAnual = useMemo(() => {
-    return tipoTasaMoratoria === 'anual' ? tasaMoratoriaInput : tasaMoratoriaInput * 12;
-  }, [tasaMoratoriaInput, tipoTasaMoratoria]);
+    return tipoTasaMoratoria === 'anual' ? valTasaMora : valTasaMora * 12;
+  }, [valTasaMora, tipoTasaMoratoria]);
 
   // Auditoría SCJN - Detección de Usura (Tesis 1a./J. 47/2014 & 1a./J. 57/2016)
-  // Parámetros Banxico TEPP / CAT bancario promedio: 36% anual (~3.0% mensual)
-  // Tasa legal supletoria (Art. 362 Cód. Com.): 6% anual (0.5% mensual)
   const usuraAudit = useMemo(() => {
+    if (valTasaMora <= 0) {
+      return {
+        nivel: 'neutro',
+        color: 'slate',
+        titulo: 'Calculadora Limpia - Auditoría SCJN en Espera',
+        descripcion: 'Ingresa la suerte principal, fecha de mora y tasa de interés pactada para auditar usura conforme a la SCJN.',
+        recomendacion: 'Todos los campos se encuentran limpios para ingresar un nuevo caso.'
+      };
+    }
+
     const tasa = tasaMoratoriaAnual;
     if (tasa <= 36) {
       return {
@@ -158,12 +191,12 @@ export default function LiquidacionForense() {
         recomendacion: 'Se recomienda encarecidamente ajustar voluntariamente la tasa en la planilla a la Tasa Máxima Prudencial SCJN (36% anual / 3% mensual). De lo contrario, el juez desestimará la cuantía o abrirá vista desfavorable.'
       };
     }
-  }, [tasaMoratoriaAnual, tasaMoratoriaMensual]);
+  }, [valTasaMora, tasaMoratoriaAnual, tasaMoratoriaMensual]);
 
   // Aplicar corrección sugerida por SCJN
   const handleAjustarTasaSCJN = () => {
     setTipoTasaMoratoria('mensual');
-    setTasaMoratoriaInput(3.0); // 3% mensual = 36% anual
+    setTasaMoratoriaInput('3.0'); // 3% mensual = 36% anual
   };
 
   // Agregar abono
@@ -189,6 +222,20 @@ export default function LiquidacionForense() {
 
   // Motor Matemático Forense con Amortización Art. 364 Código de Comercio
   const calculo = useMemo(() => {
+    if (!fechaInicioMora || valSuertePrincipal <= 0) {
+      return {
+        valido: false,
+        diasTotales: 0,
+        interesMoratorioTotal: 0,
+        interesOrdinarioTotal: 0,
+        ivaTotal: 0,
+        totalAbonos: 0,
+        capitalRemanente: valSuertePrincipal,
+        totalLiquidacion: valSuertePrincipal,
+        desglosePeriodos: [] as PeriodoDesglose[]
+      };
+    }
+
     const fInicio = new Date(fechaInicioMora);
     const fCorte = new Date(fechaCorte);
 
@@ -200,8 +247,8 @@ export default function LiquidacionForense() {
         interesOrdinarioTotal: 0,
         ivaTotal: 0,
         totalAbonos: 0,
-        capitalRemanente: suertePrincipal,
-        totalLiquidacion: suertePrincipal,
+        capitalRemanente: valSuertePrincipal,
+        totalLiquidacion: valSuertePrincipal,
         desglosePeriodos: [] as PeriodoDesglose[]
       };
     }
@@ -212,25 +259,25 @@ export default function LiquidacionForense() {
     // Si no hay abonos, cálculo directo
     if (abonos.length === 0) {
       const tasaDiariaMora = (tasaMoratoriaMensual / 100) / 30;
-      const interesMoratorioTotal = suertePrincipal * tasaDiariaMora * diasTotales;
+      const interesMoratorioTotal = valSuertePrincipal * tasaDiariaMora * diasTotales;
       
-      const tasaDiariaOrd = aplicaOrdinario ? ((tasaOrdinariaInput / 100) / 30) : 0;
-      const interesOrdinarioTotal = suertePrincipal * tasaDiariaOrd * diasTotales;
+      const tasaDiariaOrd = aplicaOrdinario ? ((valTasaOrd / 100) / 30) : 0;
+      const interesOrdinarioTotal = valSuertePrincipal * tasaDiariaOrd * diasTotales;
 
       const subtotalIntereses = interesMoratorioTotal + interesOrdinarioTotal;
       const ivaTotal = aplicaIva ? subtotalIntereses * 0.16 : 0;
-      const totalLiquidacion = suertePrincipal + subtotalIntereses + ivaTotal;
+      const totalLiquidacion = valSuertePrincipal + subtotalIntereses + ivaTotal;
 
       const periodoUnico: PeriodoDesglose = {
         fechaInicio: fechaInicioMora,
         fechaFin: fechaCorte,
         dias: diasTotales,
-        capitalBase: suertePrincipal,
+        capitalBase: valSuertePrincipal,
         tasaMensual: tasaMoratoriaMensual,
         interesDevengado: interesMoratorioTotal,
         abonoInteres: 0,
         abonoCapital: 0,
-        capitalFinal: suertePrincipal,
+        capitalFinal: valSuertePrincipal,
         saldoInteresPendiente: interesMoratorioTotal
       };
 
@@ -241,14 +288,14 @@ export default function LiquidacionForense() {
         interesOrdinarioTotal,
         ivaTotal,
         totalAbonos: 0,
-        capitalRemanente: suertePrincipal,
+        capitalRemanente: valSuertePrincipal,
         totalLiquidacion,
         desglosePeriodos: [periodoUnico]
       };
     }
 
     // Hay abonos: simular paso a paso respetando prelación legal
-    let capitalActual = suertePrincipal;
+    let capitalActual = valSuertePrincipal;
     let interesAcumuladoNoLiquidado = 0;
     let interesMoratorioTotal = 0;
     let fechaPivote = new Date(fechaInicioMora);
@@ -275,8 +322,6 @@ export default function LiquidacionForense() {
         interesMoratorioTotal += interesLapso;
 
         // Imputación del abono (Art. 364 Cód. Comercio):
-        // 1. A intereses devengados
-        // 2. Remanente a capital
         let abonoAInteres = 0;
         let abonoACapital = 0;
 
@@ -332,7 +377,7 @@ export default function LiquidacionForense() {
       });
     }
 
-    const tasaDiariaOrd = aplicaOrdinario ? ((tasaOrdinariaInput / 100) / 30) : 0;
+    const tasaDiariaOrd = aplicaOrdinario ? ((valTasaOrd / 100) / 30) : 0;
     const interesOrdinarioTotal = capitalActual * tasaDiariaOrd * diasTotales;
     const subtotalIntereses = interesAcumuladoNoLiquidado + interesOrdinarioTotal;
     const ivaTotal = aplicaIva ? subtotalIntereses * 0.16 : 0;
@@ -350,12 +395,12 @@ export default function LiquidacionForense() {
       desglosePeriodos
     };
   }, [
-    suertePrincipal, 
+    valSuertePrincipal, 
     fechaInicioMora, 
     fechaCorte, 
     tasaMoratoriaMensual, 
     aplicaOrdinario, 
-    tasaOrdinariaInput, 
+    valTasaOrd, 
     aplicaIva, 
     abonos
   ]);
@@ -364,6 +409,11 @@ export default function LiquidacionForense() {
   const escritoJudicial = useMemo(() => {
     const formatCurrency = (val: number) => `$${val.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} M.N.`;
     
+    if (!calculo.valido) {
+      return `[CALCULADORA EN ESPERA DE DATOS]
+Por favor completa la Suerte Principal, Fecha de Inicio de Mora y Tasa de Interés en la pestaña "1. Parámetros & Cálculo" para generar automáticamente la Planilla Judicial de Liquidación con formato oficial.`;
+    }
+
     return `EXPEDIENTE: ${expedienteNum || 'SE REGISTRARÁ'}
 JUICIO: ${tipoJuicio}
 ACTOR: ${parteActora.toUpperCase() || 'PARTE ACTORA'}
@@ -383,7 +433,7 @@ A efecto de hacer efectiva la condena decretada en contra de la parte demandada 
 
 PRESTACIONES
 
-A) Por concepto de SUERTE PRINCIPAL insoluta, la cantidad líquida de ${formatCurrency(calculo.capitalRemanente)} (${calculo.capitalRemanente === suertePrincipal ? 'importe original adeudado' : 'saldo insoluto tras amortización de abonos legales'}).
+A) Por concepto de SUERTE PRINCIPAL insoluta, la cantidad líquida de ${formatCurrency(calculo.capitalRemanente)} (${calculo.capitalRemanente === valSuertePrincipal ? 'importe original adeudado' : 'saldo insoluto tras amortización de abonos legales'}).
 
 B) Por concepto de INTERESES MORATORIOS devengados a partir del día ${fechaInicioMora} (fecha de constitución en mora) al día ${fechaCorte} (fecha de corte de la presente planilla), calculados a la tasa del ${tasaMoratoriaMensual.toFixed(2)}% mensual (${tasaMoratoriaAnual.toFixed(2)}% anual), arrojando la cantidad líquida de ${formatCurrency(calculo.interesMoratorioTotal - (calculo.totalAbonos > 0 ? (calculo.interesMoratorioTotal - calculo.desglosePeriodos.reduce((acc, p) => acc + p.saldoInteresPendiente, 0)) : 0))}.
 
@@ -398,7 +448,7 @@ HECHOS Y CORRIDA FINANCIERA FORENSE
 
 3. CORRIDA DETALLADA DE LA LIQUIDACIÓN:
 - Periodo liquidado: Del ${fechaInicioMora} al ${fechaCorte} (${calculo.diasTotales} días naturales transcurridos).
-- Suerte principal base: ${formatCurrency(suertePrincipal)}
+- Suerte principal base: ${formatCurrency(valSuertePrincipal)}
 - Total de abonos computados a prelación de ley (Art. 364 Código de Comercio): ${formatCurrency(calculo.totalAbonos)}
 - Remanente insoluto de suerte principal: ${formatCurrency(calculo.capitalRemanente)}
 - Intereses devengados pendientes de liquidación: ${formatCurrency(calculo.interesMoratorioTotal)}
@@ -435,7 +485,7 @@ En la fecha de su presentación judicial.`;
     fechaCorte, 
     tasaMoratoriaMensual, 
     tasaMoratoriaAnual, 
-    suertePrincipal, 
+    valSuertePrincipal, 
     aplicaOrdinario, 
     aplicaIva
   ]);
@@ -497,9 +547,17 @@ En la fecha de su presentación judicial.`;
         {/* Acciones principales */}
         <div className="flex items-center gap-2">
           <button
+            onClick={handleLimpiarTodo}
+            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs shadow-sm transition-colors cursor-pointer"
+            title="Limpiar todos los campos y reiniciar calculadora"
+          >
+            <RotateCcw className="w-3.5 h-3.5 text-slate-500" />
+            Limpiar Todo
+          </button>
+          <button
             onClick={handleExportDocx}
             disabled={isExporting || !calculo.valido}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-blue-700 hover:bg-blue-800 text-white font-medium text-sm shadow-sm transition-colors disabled:opacity-50 cursor-pointer"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-700 hover:bg-blue-800 text-white font-medium text-xs shadow-sm transition-colors disabled:opacity-50 cursor-pointer"
           >
             <Download className="w-4 h-4" />
             {isExporting ? 'Generando Word...' : 'Descargar Planilla Judicial (.docx)'}
@@ -540,7 +598,9 @@ En la fecha de su presentación judicial.`;
           ? 'bg-emerald-50 border-emerald-200 text-emerald-950'
           : usuraAudit.nivel === 'medio'
           ? 'bg-amber-50 border-amber-200 text-amber-950'
-          : 'bg-rose-50 border-rose-200 text-rose-950'
+          : usuraAudit.nivel === 'alto'
+          ? 'bg-rose-50 border-rose-200 text-rose-950'
+          : 'bg-slate-50 border-slate-200 text-slate-800'
       }`}>
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div className="flex items-start gap-3">
@@ -549,11 +609,14 @@ En la fecha de su presentación judicial.`;
                 ? 'bg-emerald-100 text-emerald-700'
                 : usuraAudit.nivel === 'medio'
                 ? 'bg-amber-100 text-amber-700'
-                : 'bg-rose-100 text-rose-700 animate-pulse'
+                : usuraAudit.nivel === 'alto'
+                ? 'bg-rose-100 text-rose-700 animate-pulse'
+                : 'bg-slate-200 text-slate-700'
             }`}>
               {usuraAudit.nivel === 'bajo' && <ShieldCheck className="w-6 h-6" />}
               {usuraAudit.nivel === 'medio' && <AlertTriangle className="w-6 h-6" />}
               {usuraAudit.nivel === 'alto' && <ShieldAlert className="w-6 h-6" />}
+              {usuraAudit.nivel === 'neutro' && <Calculator className="w-6 h-6 text-slate-600" />}
             </div>
             <div>
               <div className="flex items-center gap-2">
@@ -562,11 +625,15 @@ En la fecha de su presentación judicial.`;
                     ? 'bg-emerald-200/80 text-emerald-900'
                     : usuraAudit.nivel === 'medio'
                     ? 'bg-amber-200/80 text-amber-900'
-                    : 'bg-rose-200/80 text-rose-900'
+                    : usuraAudit.nivel === 'alto'
+                    ? 'bg-rose-200/80 text-rose-900'
+                    : 'bg-slate-200 text-slate-700'
                 }`}>
                   Semáforo Anti-Usura SCJN
                 </span>
-                <span className="text-xs font-semibold">Tasa Anualizada: {tasaMoratoriaAnual.toFixed(2)}% | Mensual: {tasaMoratoriaMensual.toFixed(2)}%</span>
+                {valTasaMora > 0 && (
+                  <span className="text-xs font-semibold">Tasa Anualizada: {tasaMoratoriaAnual.toFixed(2)}% | Mensual: {tasaMoratoriaMensual.toFixed(2)}%</span>
+                )}
               </div>
               <h3 className="font-bold text-base mt-1">{usuraAudit.titulo}</h3>
               <p className="text-sm opacity-90 mt-0.5">{usuraAudit.descripcion}</p>
@@ -574,7 +641,7 @@ En la fecha de su presentación judicial.`;
             </div>
           </div>
 
-          {usuraAudit.nivel !== 'bajo' && (
+          {valTasaMora > 0 && usuraAudit.nivel !== 'bajo' && (
             <button
               onClick={handleAjustarTasaSCJN}
               className="shrink-0 inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-amber-400 font-semibold text-xs border border-amber-500/40 shadow transition-all cursor-pointer"
@@ -634,7 +701,7 @@ En la fecha de su presentación judicial.`;
             ${calculo.capitalRemanente.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
           </p>
           <span className="text-[11px] text-slate-500">
-            {calculo.capitalRemanente < suertePrincipal ? 'Saldo amortizado' : 'Capital base inicial'}
+            {valSuertePrincipal > 0 && calculo.capitalRemanente < valSuertePrincipal ? 'Saldo amortizado' : 'Capital base inicial'}
           </span>
         </div>
 
@@ -644,7 +711,7 @@ En la fecha de su presentación judicial.`;
             {calculo.diasTotales} días
           </p>
           <span className="text-[11px] text-slate-500">
-            Del {fechaInicioMora} al {fechaCorte}
+            {fechaInicioMora ? `Del ${fechaInicioMora} al ${fechaCorte}` : 'Ingresa la fecha de inicio'}
           </span>
         </div>
 
@@ -690,8 +757,9 @@ En la fecha de su presentación judicial.`;
                     <input
                       type="number"
                       step="any"
+                      placeholder="0.00"
                       value={suertePrincipal}
-                      onChange={(e) => setSuertePrincipal(parseFloat(e.target.value) || 0)}
+                      onChange={(e) => setSuertePrincipal(e.target.value)}
                       className="w-full pl-8 pr-3 py-2 border border-slate-300 rounded-lg text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-amber-500"
                     />
                   </div>
@@ -706,8 +774,9 @@ En la fecha de su presentación judicial.`;
                       <input
                         type="number"
                         step="0.01"
+                        placeholder="0.00"
                         value={tasaMoratoriaInput}
-                        onChange={(e) => setTasaMoratoriaInput(parseFloat(e.target.value) || 0)}
+                        onChange={(e) => setTasaMoratoriaInput(e.target.value)}
                         className="w-full pr-8 pl-3 py-2 border border-slate-300 rounded-lg text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-amber-500"
                       />
                       <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 font-bold">%</span>
@@ -721,9 +790,11 @@ En la fecha de su presentación judicial.`;
                       <option value="anual">Anual</option>
                     </select>
                   </div>
-                  <p className="text-[11px] text-slate-500 mt-1">
-                    Equivalente a: <strong>{tasaMoratoriaMensual.toFixed(2)}% mensual</strong> / <strong>{tasaMoratoriaAnual.toFixed(2)}% anual</strong>
-                  </p>
+                  {valTasaMora > 0 && (
+                    <p className="text-[11px] text-slate-500 mt-1">
+                      Equivalente a: <strong>{tasaMoratoriaMensual.toFixed(2)}% mensual</strong> / <strong>{tasaMoratoriaAnual.toFixed(2)}% anual</strong>
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -770,8 +841,9 @@ En la fecha de su presentación judicial.`;
                       <input
                         type="number"
                         step="0.01"
+                        placeholder="0.00"
                         value={tasaOrdinariaInput}
-                        onChange={(e) => setTasaOrdinariaInput(parseFloat(e.target.value) || 0)}
+                        onChange={(e) => setTasaOrdinariaInput(e.target.value)}
                         className="w-20 px-2 py-1 text-sm border border-slate-300 rounded font-semibold text-right"
                       />
                       <span className="text-xs text-slate-500">% mensual</span>

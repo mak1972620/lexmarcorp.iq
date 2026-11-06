@@ -23,6 +23,7 @@ import Auditor from './pages/Auditor';
 import DocumentScanner from './pages/DocumentScanner';
 import Templates from './pages/Templates';
 import LiquidacionForense from './pages/LiquidacionForense';
+import DueloProcesal from './pages/DueloProcesal';
 import Profile from './pages/Profile';
 import { motion, AnimatePresence } from 'motion/react';
 import AiAssistant from './components/AiAssistant';
@@ -74,6 +75,7 @@ export default function App() {
           <Route path="/pagos" element={<ProtectedRoute><Payments /></ProtectedRoute>} />
           <Route path="/auditor" element={<ProtectedRoute roles={['admin', 'abogado']}><Auditor /></ProtectedRoute>} />
           <Route path="/liquidacion" element={<ProtectedRoute roles={['admin', 'abogado']}><LiquidacionForense /></ProtectedRoute>} />
+          <Route path="/duelo-procesal" element={<ProtectedRoute roles={['admin', 'abogado']}><DueloProcesal /></ProtectedRoute>} />
           <Route path="/plantillas" element={<ProtectedRoute roles={['admin', 'abogado']}><Templates /></ProtectedRoute>} />
           <Route path="/scanner" element={<ProtectedRoute><DocumentScanner /></ProtectedRoute>} />
           <Route path="/perfil" element={<ProtectedRoute><Profile /></ProtectedRoute>} />

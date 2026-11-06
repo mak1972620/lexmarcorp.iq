@@ -1609,6 +1609,167 @@ Por favor, redacta el borrador definitivo con formalidad profesional:
     }
   });
 
+  // DUELO PROCESAL: Cruce de Demanda vs Contestación + Fijación de Litis + Pliego de Posiciones e Interrogatorios
+  app.post("/api/ai/duelo-procesal", authenticate, async (req: any, res) => {
+    try {
+      const { 
+        caseId, 
+        materia = "Mercantil", 
+        rolUsuario = "actor", 
+        textoDemanda, 
+        textoContestacion, 
+        instruccionesExtra,
+        expediente = "",
+        juzgado = "",
+        partes = ""
+      } = req.body;
+
+      if (!textoDemanda || !textoContestacion) {
+        return res.status(400).json({ error: "Debes proporcionar tanto el texto de la Demanda como el de la Contestación." });
+      }
+
+      const apiKey = process.env.GEMINI_API_KEY;
+      if (!apiKey) {
+        return res.status(500).json({ error: "API Key de Gemini no configurada en el servidor." });
+      }
+
+      const ai = new GoogleGenAI({
+        apiKey,
+        httpOptions: {
+          headers: {
+            "User-Agent": "lexmarcorp-ai-studio"
+          }
+        }
+      });
+
+      const systemInstruction = `
+# ROL: ESTRATEGA PROCESAL LITIGANTE SENIOR Y PROYECTISTA JUDICIAL MEXICANO (LEXMARCORP IQ)
+Eres una eminencia en derecho procesal mexicano (materia mercantil, civil, familiar y laboral).
+Tu especialidad es el análisis forense de la Litis: confrontar la Demanda inicial contra la Contestación de demanda, determinar la distribución exacta de la carga probatoria (Onus Probandi según los Arts. 1194 al 1196 del Código de Comercio o Códigos Procesales Civiles), descubrir contradicciones, desarticular excepciones de la contraria y diseñar el armamento probatorio perfecto:
+1. Posiciones confesionales que acorralen al absolvente (redactadas en sentido afirmativo, claras, precisas, no insidiosas, sin contener más de un hecho).
+2. Preguntas testimoniales incisivas e idóneas para acreditar hechos controvertidos directos.
+3. Memorial formal en formato judicial mexicano listo para presentar ante el juzgado.
+
+# FORMATO DE SALIDA ESTRICTO:
+Debes responder ÚNICAMENTE con un objeto JSON válido (sin envoltorios markdown, sin comillas triples \`\`\`json, solo JSON crudo parseable) con la siguiente estructura exacta:
+{
+  "resumenLitis": "Síntesis ejecutiva de la controversia principal y el núcleo de la disputa...",
+  "hechosControvertidos": [
+    {
+      "numero": 1,
+      "descripcion": "Descripción del hecho controvertido...",
+      "posturaActor": "Qué sostiene el actor...",
+      "posturaDemandado": "Qué niega o alega el demandado...",
+      "cargaProbatoria": "Actor" | "Demandado",
+      "fundamentoCarga": "Art. 1194 Código de Comercio (El que afirma está obligado a probar)...",
+      "nivelRiesgo": "alto" | "medio" | "bajo"
+    }
+  ],
+  "hechosAdmitidosOConfesos": [
+    {
+      "numero": 1,
+      "descripcion": "Hecho que no fue controvertido, fue admitido expresamente o por falta de contestación específica...",
+      "impactoProcesal": "Relevancia probatoria a favor del litigante..."
+    }
+  ],
+  "excepcionesDetectadas": [
+    {
+      "nombre": "Nombre de la excepción (ej. Pago, Prescripción, Incompetencia, Falta de Legitimación, Sine Actione Agis)...",
+      "argumentoContraria": "Qué argumenta la contraparte...",
+      "estrategiaDesvirtuacion": "Estrategia jurídica para impugnarla y destruirla en juicio...",
+      "probabilidadExitoContraria": "alta" | "media" | "baja"
+    }
+  ],
+  "pliegoPosicionesConfesional": [
+    {
+      "numero": 1,
+      "posicion": "Que diga el absolvente si es cierto como lo es que con fecha...",
+      "objetivoProcesal": "Qué confesión o ventaja procesal se busca obtener con esta posición...",
+      "hechoRelacionado": 1
+    }
+  ],
+  "interrogatorioTestigos": [
+    {
+      "numero": 1,
+      "pregunta": "Que diga el testigo si sabe y le consta...",
+      "objetivoProcesal": "Acreditar el modo, tiempo o lugar del hecho controvertido...",
+      "razonDeSuDicho": "Pregunta de control obligatoria"
+    }
+  ],
+  "escritoJudicialWord": "Texto completo y solemne del PLIEGO DE POSICIONES en formato judicial oficial mexicano, con Proemio formal (Juzgado, Expediente, Partes), Pliego de Posiciones articuladas y numeradas, Pliego de Preguntas para Testigos, y Calce de firmas con 'PROTESTO LO NECESARIO'."
+}
+`;
+
+      const prompt = `
+MATERIA PROCESAL: ${materia}
+ROL DE NUESTRO CLIENTE: ${rolUsuario.toUpperCase()}
+DATOS DEL JUICIO:
+- Expediente: ${expediente || "EN TRÁMITE"}
+- Juzgado: ${juzgado || "JUZGADO DE PRIMERA INSTANCIA"}
+- Partes: ${partes || "ACTOR VS DEMANDADO"}
+
+TEXTO DE LA DEMANDA (O HECHOS DEL ACTOR):
+"""
+${textoDemanda}
+"""
+
+TEXTO DE LA CONTESTACIÓN, DEFENSAS Y EXCEPCIONES:
+"""
+${textoContestacion}
+"""
+
+INSTRUCCIONES ADICIONALES DEL ABOGADO:
+${instruccionesExtra || "Enfocar el interrogatorio en obtener confesión expresa de los hechos medulares y desarmar las excepciones opuestas."}
+
+Realiza el cruce forense de la litis y devuelve ÚNICAMENTE el objeto JSON requerido.
+`;
+
+      const response = await ai.models.generateContent({
+        model: GEMINI_FLASH,
+        contents: prompt,
+        config: {
+          systemInstruction,
+          temperature: 0.2,
+        }
+      });
+
+      let rawText = response.text || "{}";
+      // Limpiar posibles bloques markdown ```json ... ```
+      rawText = rawText.trim();
+      if (rawText.startsWith("```json")) {
+        rawText = rawText.replace(/^```json/, "").replace(/```$/, "").trim();
+      } else if (rawText.startsWith("```")) {
+        rawText = rawText.replace(/^```/, "").replace(/```$/, "").trim();
+      }
+
+      let parsedResult;
+      try {
+        parsedResult = JSON.parse(rawText);
+      } catch (parseErr) {
+        console.error("Error parsing Gemini JSON for Duelo Procesal:", parseErr, rawText);
+        return res.status(500).json({ 
+          error: "La IA generó una respuesta pero el formato JSON presentó anomalías.",
+          rawOutput: rawText 
+        });
+      }
+
+      db.prepare("INSERT INTO audit_logs (action, user_id, entity) VALUES (?, ?, ?)").run(
+        `DUELO_PROCESAL_ANALISIS: ${materia}`, 
+        req.user.id, 
+        caseId ? `case_${caseId}` : "duelo_procesal"
+      );
+
+      res.json({
+        success: true,
+        data: parsedResult
+      });
+
+    } catch (error: any) {
+      console.error("Error en Duelo Procesal AI:", error);
+      res.status(500).json({ error: "Error de IA al procesar el duelo procesal: " + error.message });
+    }
+  });
+
   // Google Auth Simulation
   app.get("/api/auth/google/url", (req, res) => {
     res.json({ url: "/auth/callback?email=marco0620.MAP@gmail.com" });
