@@ -15,7 +15,8 @@ import {
   BrainCircuit,
   ScanText,
   UserCircle,
-  Scroll
+  Scroll,
+  Calculator
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { cn } from '../types';
@@ -34,6 +35,7 @@ const Sidebar = () => {
     { icon: CreditCard, label: 'Pagos', path: '/pagos', roles: ['admin', 'abogado', 'cliente'] },
     { icon: ScanText, label: 'Visión Legal', path: '/scanner', roles: ['admin', 'abogado', 'cliente'] },
     { icon: BrainCircuit, label: 'Lexmarcorp IQ', path: '/auditor', roles: ['admin', 'abogado'] },
+    { icon: Calculator, label: 'Liquidación & Usura', path: '/liquidacion', roles: ['admin', 'abogado'] },
   ];
 
   const adminItems = [
