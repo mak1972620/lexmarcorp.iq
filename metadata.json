@@ -1,0 +1,6 @@
+{
+  "name": "LEXMARCORP CONSULTOR.IA",
+  "description": "Plataforma integral de gestión legal para abogados y clientes con automatización, expedientes, tareas y pagos.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
