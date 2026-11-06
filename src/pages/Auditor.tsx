@@ -21,8 +21,11 @@ import {
 } from 'lucide-react';
 import Markdown from 'react-markdown';
 import * as mammoth from 'mammoth';
+import { useAuth } from '../context/AuthContext';
+import { generateJudicialDocx, downloadDocxBlob } from '../utils/docxExport';
 
 const Auditor = () => {
+  const { user } = useAuth();
   const [documentText, setDocumentText] = useState('');
   const [materia, setMateria] = useState('Civil');
   const [loading, setLoading] = useState(false);
@@ -33,6 +36,7 @@ const Auditor = () => {
   const [activeTab, setActiveTab] = useState<'report' | 'shield'>('report');
   const [shieldedText, setShieldedText] = useState<string | null>(null);
   const [shieldedLoading, setShieldedLoading] = useState(false);
+  const [downloadingDocx, setDownloadingDocx] = useState(false);
   
   // Signature and Seal states
   const [signatureType, setSignatureType] = useState<'canvas' | 'text'>('canvas');
@@ -285,6 +289,25 @@ const Auditor = () => {
     document.body.appendChild(element);
     element.click();
     document.body.removeChild(element);
+  };
+
+  const handleDownloadDocx = async () => {
+    if (!shieldedText) return;
+    setDownloadingDocx(true);
+    try {
+      const blob = await generateJudicialDocx(shieldedText, {
+        title: `Escrito Blindado - Materia ${materia}`,
+        materia,
+        firmante: signatureType === 'text' ? typedName : (user?.name || 'LIC. MARCO PERALES'),
+        selloCripto: isSigned ? sealHash : undefined,
+      });
+      downloadDocxBlob(blob, `escrito_blindado_${materia.toLowerCase()}_formato_juzgado.docx`);
+    } catch (err) {
+      console.error('Error al generar DOCX:', err);
+      alert('Ocurrió un error al generar el archivo Word.');
+    } finally {
+      setDownloadingDocx(false);
+    }
   };
 
   // Handles printing only the document
@@ -545,6 +568,16 @@ const Auditor = () => {
                               Versión Corregida e Inmune
                             </span>
                             <div className="flex items-center gap-2">
+                              {/* Download Word (.docx) */}
+                              <button
+                                onClick={handleDownloadDocx}
+                                disabled={downloadingDocx}
+                                className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all disabled:opacity-50"
+                                title="Descargar como documento Word con formato judicial de juzgado (.docx)"
+                              >
+                                {downloadingDocx ? <Loader2 size={14} className="animate-spin" /> : <FileText size={14} />}
+                                <span>{downloadingDocx ? 'Generando...' : 'Descargar Word (.docx)'}</span>
+                              </button>
                               {/* Copy */}
                               <button
                                 onClick={handleCopy}
@@ -554,14 +587,14 @@ const Auditor = () => {
                                 {isCopied ? <Check size={14} className="text-emerald-500" /> : <Copy size={14} />}
                                 {isCopied ? 'Copiado' : 'Copiar'}
                               </button>
-                              {/* Download */}
+                              {/* Download TXT */}
                               <button
                                 onClick={handleDownload}
                                 className="p-2 hover:bg-white border border-transparent hover:border-slate-200 text-slate-600 hover:text-slate-950 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all"
-                                title="Descargar como TXT"
+                                title="Descargar como TXT plano"
                               >
                                 <Download size={14} />
-                                Descargar
+                                TXT
                               </button>
                               {/* Print */}
                               <button

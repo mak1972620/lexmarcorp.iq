@@ -208,75 +208,6 @@ if (!adminExists) {
   );
 }
 
-const adminGmailExists = db.prepare("SELECT * FROM users WHERE LOWER(email) = ?").get("marco0620.map@gmail.com");
-if (!adminGmailExists) {
-  const hashedPassword = bcrypt.hashSync("LexmarCorp!2026", 10);
-  db.prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)").run(
-    "CEO. LIC. MARCO PERALES",
-    "marco0620.map@gmail.com",
-    hashedPassword,
-    "admin"
-  );
-}
-
-// Auto-seed clients and cases if not exist
-const clientsCount = db.prepare("SELECT COUNT(*) as count FROM clients").get().count;
-if (clientsCount === 0) {
-  try {
-    // Re-insert Cartera Propia
-    const clientResult = db.prepare('INSERT INTO clients (first_name, last_name, email, phone, rfc, type) VALUES (?, ?, ?, ?, ?, ?)').run(
-      'Cartera Propia', '(Marco)', 'marco0620.MAP@gmail.com', '', 'PEPM720620554', 'fisica'
-    );
-    const clientId = clientResult.lastInsertRowid;
-
-    // Re-insert Expediente
-    const caseResult = db.prepare('INSERT INTO cases (title, description, client_id, lawyer_id, type, court, case_number, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)').run(
-      'Juicio Ejecutivo Mercantil - Cartera Propia (Marco) vs Juan Jose de Leon Montelongo', 
-      'Demanda por cobro de pagarés endosados en propiedad por compra de cartera. Monto original: $39,129.75 MXN.', 
-      clientId, 
-      1, 
-      'Mercantil', 
-      'Juzgado Mercantil Local', 
-      'EXP-001/2026', 
-      'abierto'
-    );
-    const caseId = caseResult.lastInsertRowid;
-
-    // Insert payments (Expenses)
-    const expenses = [
-      { amount: 5000, concept: 'Gastos Iniciales de Juicio', notes: 'Gastos iniciales del juicio' },
-      { amount: 500, concept: 'Gasolina y Traslados', notes: 'Diligencias' },
-      { amount: 150, concept: 'Internet Proporcional', notes: 'Investigación' },
-      { amount: 80, concept: 'Copias Simples', notes: 'Anexos' },
-      { amount: 450, concept: 'Copias Certificadas', notes: 'Documentación oficial' },
-      { amount: 200, concept: 'Recarga Telefónica', notes: 'Gestión telefónica' },
-      { amount: 100, concept: 'WhatsApp Business', notes: 'Comunicación' },
-      { amount: 400, concept: 'Suscripciones IA', notes: 'Asistencia LexmarIQ' },
-      { amount: 1000, concept: 'Asesoría y Consultas', notes: 'Auditoría jurídica' }
-    ];
-
-    const stmtExp = db.prepare('INSERT INTO payments (case_id, client_id, amount, concept, type, method, status, notes, is_expense) VALUES (?, ?, ?, ?, \'manual\', \'Efectivo/Transferencia\', \'completado\', ?, 1)');
-    for (const exp of expenses) {
-      stmtExp.run(caseId, clientId, exp.amount, exp.concept, exp.notes);
-    }
-
-    // Insert tasks
-    const tasks = [
-      { title: 'Presentación de Demanda', desc: 'Acudir a la Oficialía de Partes con la demanda impresa, anexos y traslados.', priority: 'Alta', due: '2026-05-10' },
-      { title: 'Monitoreo de Boletín Judicial', desc: 'Revisar la publicación del auto de admisión y mandamiento de ejecución (Exequendo).', priority: 'Media', due: '2026-05-15' },
-      { title: 'Coordinación con Actuario', desc: 'Agendar fecha para la diligencia de requerimiento de pago, embargo y emplazamiento.', priority: 'Alta', due: '2026-05-20' }
-    ];
-    const stmtTask = db.prepare('INSERT INTO tasks (title, description, case_id, assigned_to, priority, due_date, status) VALUES (?, ?, ?, 1, ?, ?, \'pendiente\')');
-    for (const t of tasks) {
-      stmtTask.run(t.title, t.desc, caseId, t.priority, t.due);
-    }
-
-    console.log('Successfully completed database seeding of legal files and financial/task records.');
-  } catch (err) {
-    console.error('Error during auto-seeding:', err);
-  }
-}
-
 // Ensure system goals are established
 try {
   db.prepare("INSERT INTO system_settings (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value=excluded.value").run("goal_cases", "50");
@@ -1179,6 +1110,41 @@ Presenta tu respuesta estructurada con encabezados claros (usa Markdown).`;
       title, description, case_id, assigned_to, priority, due_date
     );
     db.prepare("INSERT INTO audit_logs (action, user_id, entity) VALUES (?, ?, ?)").run("CREATE_TASK", req.user.id, "tasks");
+    res.json({ id: result.lastInsertRowid });
+  });
+
+  // Messages
+  app.get("/api/messages", authenticate, (req: any, res) => {
+    const { case_id } = req.query;
+    if (case_id) {
+      const messages = db.prepare(`
+        SELECT m.*, u.name as sender_name, u.role as sender_role
+        FROM messages m
+        LEFT JOIN users u ON m.sender_id = u.id
+        WHERE m.case_id = ?
+        ORDER BY m.created_at ASC
+      `).all(case_id);
+      return res.json(messages);
+    }
+    const messages = db.prepare(`
+      SELECT m.*, u.name as sender_name, u.role as sender_role, c.title as case_title
+      FROM messages m
+      LEFT JOIN users u ON m.sender_id = u.id
+      LEFT JOIN cases c ON m.case_id = c.id
+      ORDER BY m.created_at ASC
+    `).all();
+    res.json(messages);
+  });
+
+  app.post("/api/messages", authenticate, (req: any, res) => {
+    const { case_id, content } = req.body;
+    if (!case_id || !content || !content.trim()) {
+      return res.status(400).json({ error: "Expediente y mensaje son requeridos" });
+    }
+    const result = db.prepare("INSERT INTO messages (case_id, sender_id, content) VALUES (?, ?, ?)").run(
+      case_id, req.user.id, content.trim()
+    );
+    db.prepare("INSERT INTO audit_logs (action, user_id, entity) VALUES (?, ?, ?)").run("SEND_MESSAGE", req.user.id, "messages");
     res.json({ id: result.lastInsertRowid });
   });
 

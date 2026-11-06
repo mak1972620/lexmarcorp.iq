@@ -21,6 +21,7 @@ import {
   Printer
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { generateJudicialDocx, downloadDocxBlob } from '../utils/docxExport';
 
 interface Template {
   id: number;
@@ -91,6 +92,7 @@ export default function Templates() {
   const [copied, setCopied] = useState<boolean>(false);
   const [savingDoc, setSavingDoc] = useState<boolean>(false);
   const [saveSuccess, setSaveSuccess] = useState<boolean>(false);
+  const [downloadingDocx, setDownloadingDocx] = useState<boolean>(false);
 
   // Initialize and load
   useEffect(() => {
@@ -403,6 +405,37 @@ export default function Templates() {
       </html>
     `);
     printWindow.document.close();
+  };
+
+  const handleDownloadDocx = async () => {
+    if (!generatedDraft) return;
+    setDownloadingDocx(true);
+    try {
+      const selectedCase = cases.find(c => c.id.toString() === selectedCaseId);
+      const selectedClient = clients.find(cl => cl.id.toString() === selectedClientId);
+
+      const blob = await generateJudicialDocx(generatedDraft, {
+        title: selectedTemplate?.title || 'Escrito Judicial',
+        materia: selectedTemplate?.materia || 'Civil',
+        rubro: selectedCase ? {
+          actor: selectedClient ? `${selectedClient.first_name} ${selectedClient.last_name}` : undefined,
+          juicio: selectedCase.type || selectedTemplate?.materia,
+          expediente: selectedCase.case_number,
+          juzgado: selectedCase.court,
+        } : undefined,
+      });
+
+      const cleanTitle = (selectedTemplate?.title || 'escrito_legal')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '_')
+        .replace(/^_+|_+$/g, '');
+      downloadDocxBlob(blob, `${cleanTitle}_formato_juzgado.docx`);
+    } catch (err) {
+      console.error('Error generando DOCX en plantillas:', err);
+      alert('Ocurrió un error al generar el archivo Word.');
+    } finally {
+      setDownloadingDocx(false);
+    }
   };
 
   // Filter templates list
@@ -747,6 +780,19 @@ export default function Templates() {
                 {generatedDraft && (
                   <div className="flex items-center gap-1.5">
                     <button
+                      onClick={handleDownloadDocx}
+                      disabled={downloadingDocx}
+                      className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold transition shadow-sm disabled:opacity-50"
+                      title="Descargar como Word (.docx) con formato judicial oficial"
+                    >
+                      {downloadingDocx ? (
+                        <div className="animate-spin rounded-full h-3 w-3 border-2 border-white border-t-transparent"></div>
+                      ) : (
+                        <Download size={14} />
+                      )}
+                      <span>{downloadingDocx ? 'Generando...' : 'Descargar Word (.docx)'}</span>
+                    </button>
+                    <button
                       onClick={handlePrint}
                       className="p-1.5 hover:bg-slate-200/60 rounded text-slate-500 hover:text-slate-700 transition"
                       title="Imprimir Escrito"
@@ -805,7 +851,16 @@ export default function Templates() {
                     <span>Escrito listo para indexar en base de datos.</span>
                   </div>
 
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={handleDownloadDocx}
+                      disabled={downloadingDocx}
+                      className="flex items-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold shadow-sm transition-all disabled:opacity-50 active:scale-[0.98]"
+                    >
+                      <Download size={14} />
+                      <span>{downloadingDocx ? 'GENERANDO WORD...' : 'DESCARGAR WORD (.DOCX)'}</span>
+                    </button>
+
                     <button
                       onClick={handleSaveToCase}
                       disabled={savingDoc || saveSuccess}
