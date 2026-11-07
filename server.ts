@@ -220,6 +220,18 @@ if (!adminExists) {
   );
 }
 
+// Seed Demo Lawyer User for testing / client sharing
+const demoUserExists = db.prepare("SELECT * FROM users WHERE LOWER(email) = ?").get("invitada@lexmarcorp.com");
+if (!demoUserExists) {
+  const demoHashedPassword = bcrypt.hashSync("Invitada2026!", 10);
+  db.prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)").run(
+    "Lic. Invitada Especial",
+    "invitada@lexmarcorp.com",
+    demoHashedPassword,
+    "abogado"
+  );
+}
+
 // Ensure system goals are established
 try {
   db.prepare("INSERT INTO system_settings (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value=excluded.value").run("goal_cases", "50");

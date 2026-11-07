@@ -114,10 +114,39 @@ const Login = () => {
               const data = await res.json();
               window.location.href = data.url;
             }}
-            className="w-full mt-6 py-3 border border-slate-200 rounded-xl flex items-center justify-center gap-3 hover:bg-slate-50 transition-all"
+            className="w-full mt-6 py-3 border border-slate-200 rounded-xl flex items-center justify-center gap-3 hover:bg-slate-50 transition-all cursor-pointer"
           >
             <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
             <span className="text-sm font-bold text-slate-700">Iniciar sesión con Google</span>
+          </button>
+
+          {/* Botón de Demostración 1-Clic para Clientes / Abogada */}
+          <button
+            type="button"
+            onClick={async () => {
+              setEmail('invitada@lexmarcorp.com');
+              setPassword('Invitada2026!');
+              try {
+                const res = await fetch('/api/auth/login', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ email: 'invitada@lexmarcorp.com', password: 'Invitada2026!' }),
+                });
+                const data = await res.json();
+                if (res.ok) {
+                  login(data.user, data.token);
+                  navigate('/dashboard');
+                } else {
+                  setError(data.error || 'Error al iniciar sesión demo');
+                }
+              } catch (_) {
+                setError('Error al conectar con el servidor');
+              }
+            }}
+            className="w-full mt-3 py-3 rounded-xl border border-amber-400 bg-gradient-to-r from-amber-50 to-amber-100 hover:from-amber-100 hover:to-amber-200 text-amber-950 font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm"
+          >
+            <span>⚖️</span>
+            <span>Acceso Demostración para Abogada Invitada (1 Clic)</span>
           </button>
 
           <div className="mt-8 pt-8 border-t border-slate-100">
