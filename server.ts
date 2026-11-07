@@ -2032,6 +2032,7 @@ Por favor, redacta el Informe Ejecutivo para el cliente con la estructura requer
     const vite = await createViteServer({
       server: { 
         middlewareMode: true,
+        allowedHosts: true,
         hmr: {
           port: 0 // dynamically allocate port
         }
