@@ -17,7 +17,8 @@ import {
   UserCircle,
   Scroll,
   Calculator,
-  Swords
+  Swords,
+  Clock
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { cn } from '../types';
@@ -37,6 +38,7 @@ const Sidebar = () => {
     { icon: ScanText, label: 'Visión Legal', path: '/scanner', roles: ['admin', 'abogado', 'cliente'] },
     { icon: BrainCircuit, label: 'Lexmarcorp IQ', path: '/auditor', roles: ['admin', 'abogado'] },
     { icon: Swords, label: 'Duelo Procesal', path: '/duelo-procesal', roles: ['admin', 'abogado'] },
+    { icon: Clock, label: 'Términos Judiciales', path: '/terminos', roles: ['admin', 'abogado', 'cliente'] },
     { icon: Calculator, label: 'Liquidación & Usura', path: '/liquidacion', roles: ['admin', 'abogado'] },
   ];
 
