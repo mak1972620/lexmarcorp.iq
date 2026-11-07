@@ -204,19 +204,19 @@ db.exec(`
   );
 `);
 
-// Seed Admin if not exists
-const adminExists = db.prepare("SELECT * FROM users WHERE LOWER(email) = ?").get("marco@lexmarcorp.com");
+// Seed Corporate Admin if not exists
+const adminExists = db.prepare("SELECT * FROM users WHERE LOWER(email) = ?").get("admin@lexmarcorp.com");
 if (!adminExists) {
   const hashedPassword = bcrypt.hashSync("LexmarCorp!2026", 10);
   db.prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)").run(
-    "CEO. LIC. MARCO PERALES",
-    "marco@lexmarcorp.com",
+    "DIRECTOR GENERAL - LEXMARCORP",
+    "admin@lexmarcorp.com",
     hashedPassword,
     "admin"
   );
 } else {
   db.prepare("UPDATE users SET name = ? WHERE id = 1").run(
-    "CEO. LIC. MARCO PERALES"
+    "DIRECTOR GENERAL - LEXMARCORP"
   );
 }
 
@@ -225,10 +225,15 @@ const demoUserExists = db.prepare("SELECT * FROM users WHERE LOWER(email) = ?").
 if (!demoUserExists) {
   const demoHashedPassword = bcrypt.hashSync("Invitada2026!", 10);
   db.prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)").run(
-    "Lic. Invitada Especial",
+    "Lic. Abogada Titular",
     "invitada@lexmarcorp.com",
     demoHashedPassword,
     "abogado"
+  );
+} else {
+  db.prepare("UPDATE users SET name = ? WHERE LOWER(email) = ?").run(
+    "Lic. Abogada Titular",
+    "invitada@lexmarcorp.com"
   );
 }
 
@@ -1947,20 +1952,20 @@ Por favor, redacta el Informe Ejecutivo para el cliente con la estructura requer
 
   // Google Auth Simulation
   app.get("/api/auth/google/url", (req, res) => {
-    res.json({ url: "/auth/callback?email=marco0620.MAP@gmail.com" });
+    res.json({ url: "/auth/callback?email=invitada@lexmarcorp.com" });
   });
 
   app.get("/auth/callback", (req, res) => {
-    const email = (req.query.email as string || "marco0620.map@gmail.com").trim().toLowerCase();
+    const email = (req.query.email as string || "invitada@lexmarcorp.com").trim().toLowerCase();
     
     // Look up user in DB matching email
     let user = db.prepare("SELECT * FROM users WHERE LOWER(email) = ?").get(email);
     
     if (!user) {
       // If user doesn't exist, seed them
-      const name = email === "marco0620.map@gmail.com" ? "CEO. LIC. MARCO PERALES" : "Google User";
-      const role = email === "marco0620.map@gmail.com" ? "admin" : "cliente";
-      const hashedPassword = bcrypt.hashSync("LexmarCorp!2026", 10);
+      const name = "Lic. Abogada Titular";
+      const role = "abogado";
+      const hashedPassword = bcrypt.hashSync("Invitada2026!", 10);
       
       const insertResult = db.prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)").run(
         name,

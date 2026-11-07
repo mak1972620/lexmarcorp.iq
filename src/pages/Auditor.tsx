@@ -40,7 +40,7 @@ const Auditor = () => {
   
   // Signature and Seal states
   const [signatureType, setSignatureType] = useState<'canvas' | 'text'>('canvas');
-  const [typedName, setTypedName] = useState('CEO. LIC. MARCO PERALES');
+  const [typedName, setTypedName] = useState(user?.name || 'LIC. ABOGADO PATRONO');
   const [isSigned, setIsSigned] = useState(false);
   const [sealHash, setSealHash] = useState('');
   const [isCopied, setIsCopied] = useState(false);
@@ -298,7 +298,7 @@ const Auditor = () => {
       const blob = await generateJudicialDocx(shieldedText, {
         title: `Escrito Blindado - Materia ${materia}`,
         materia,
-        firmante: signatureType === 'text' ? typedName : (user?.name || 'LIC. MARCO PERALES'),
+        firmante: signatureType === 'text' ? typedName : (user?.name || 'LIC. ABOGADO PATRONO / APODERADO'),
         selloCripto: isSigned ? sealHash : undefined,
       });
       downloadDocxBlob(blob, `escrito_blindado_${materia.toLowerCase()}_formato_juzgado.docx`);
@@ -700,7 +700,7 @@ const Auditor = () => {
                                         value={typedName}
                                         onChange={(e) => setTypedName(e.target.value)}
                                         className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs outline-none focus:ring-1 focus:ring-amber-500 focus:border-amber-500 transition-all text-slate-900"
-                                        placeholder="CEO. LIC. MARCO PERALES"
+                                        placeholder="Ej. Lic. Abogado Patrono / Titular"
                                       />
                                     </div>
                                     <button
