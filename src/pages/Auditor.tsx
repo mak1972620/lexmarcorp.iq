@@ -232,7 +232,7 @@ const Auditor = () => {
       }
     } catch (error: any) {
       console.error('Error during audit:', error);
-      setResult(`**Error en la auditoría:** ${error.message || 'Ocurrió un problema al conectar con Lexmarcorp IQ.'}`);
+      setResult(`**Error en la auditoría:** ${error.message || 'Ocurrió un problema al conectar con el motor de auditoría Tanaka IQ.'}`);
     } finally {
       setLoading(false);
     }
@@ -267,7 +267,7 @@ const Auditor = () => {
       }
     } catch (error: any) {
       console.error('Error during document armoring:', error);
-      setShieldedText(`Error al reconstruir el escrito: ${error.message || 'Ocurrió un problema al conectar con Lexmarcorp IQ.'}`);
+      setShieldedText(`Error al reconstruir el escrito: ${error.message || 'Ocurrió un problema al conectar con el motor Tanaka IQ.'}`);
     } finally {
       setShieldedLoading(false);
     }
@@ -320,7 +320,7 @@ const Auditor = () => {
     printWindow.document.write(`
       <html>
         <head>
-          <title>Escrito Judicial Blindado - Lexmarcorp IQ</title>
+          <title>Escrito Judicial Blindado - Tanaka Legal IQ</title>
           <style>
             body {
               font-family: 'Times New Roman', Times, serif;
@@ -352,7 +352,7 @@ const Auditor = () => {
           <div class="paper">${shieldedText}</div>
           ${isSigned ? `
             <div class="seal-block">
-              <strong>LEXMARCORP IQ SECURE-CORE CERTIFICATION</strong><br/>
+              <strong>FIRMA LEGAL EDILIA TANAKA Y ASOCIADOS - CERTIFICACIÓN DE BLINDAJE</strong><br/>
               Sello de Validación: ${sealHash}<br/>
               Fecha de Firma: ${new Date().toLocaleDateString('es-MX')} ${new Date().toLocaleTimeString('es-MX')}<br/>
               Firmante: ${typedName}<br/>
@@ -381,7 +381,7 @@ const Auditor = () => {
             <div className="p-2 bg-amber-500/10 text-amber-600 rounded-lg">
               <BrainCircuit size={24} />
             </div>
-            <h1 id="auditor-title-header" className="text-2xl font-bold text-slate-900">Lexmarcorp IQ</h1>
+            <h1 id="auditor-title-header" className="text-2xl font-bold text-slate-900">Tanaka Legal IQ</h1>
           </div>
           <p className="text-slate-500">Auditor Forense Jurídico Senior - Especialista en Coahuila</p>
         </div>
@@ -511,7 +511,7 @@ const Auditor = () => {
                 <div className="flex-1 bg-slate-50 rounded-xl border border-slate-100 p-6 flex flex-col items-center justify-center text-slate-400 space-y-4">
                   <BrainCircuit size={48} className="animate-pulse text-amber-500/50" />
                   <p className="text-sm font-medium text-center max-w-xs">
-                    Lexmarcorp IQ está revisando la vigencia de ley, buscando contradicciones fácticas y simulando el ataque de la contraparte...
+                    Tanaka Legal IQ está revisando la vigencia de ley, buscando contradicciones fácticas y simulando el ataque de la contraparte...
                   </p>
                 </div>
               ) : result ? (
@@ -721,8 +721,8 @@ const Auditor = () => {
                                 </div>
                                 <div className="flex-1 space-y-1 text-center md:text-left">
                                   <div className="flex flex-col md:flex-row md:items-center gap-1.5">
-                                    <h4 className="text-xs font-black text-emerald-950 uppercase tracking-wide">LexmarCorp IQ Secure Shield Certified</h4>
-                                    <span className="text-[9px] bg-emerald-600 text-white font-bold px-1.5 py-0.5 rounded-full mx-auto md:mx-0 w-fit">VERIFICADO</span>
+                                    <h4 className="text-xs font-black text-amber-950 uppercase tracking-wide">Tanaka Legal IQ Secure Shield Certified</h4>
+                                    <span className="text-[9px] bg-amber-600 text-white font-bold px-1.5 py-0.5 rounded-full mx-auto md:mx-0 w-fit">VERIFICADO</span>
                                   </div>
                                   <p className="text-[11px] text-slate-700 leading-relaxed font-mono">
                                     Escrito jurídico corregido y blindado bajo la legislación del Estado de Coahuila de Zaragoza.

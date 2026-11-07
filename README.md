@@ -1,52 +1,18 @@
-# LEXMARCORP IQ - Plataforma Legal con IA
+# TANAKA LEGAL IQ - Edilia Tanaka y Asociados
 
-Lexmarcorp IQ es una plataforma integral de gestión legal impulsada por Inteligencia Artificial (Google Gemini). Permite la gestión de expedientes, auditoría forense de escritos con "Visión de Juez", escaneo de documentos con OCR y gestión automatizada de pagos.
+Tanaka Legal IQ es una suite jurídica de alta tecnología desarrollada exclusivamente para la firma **Edilia Tanaka y Asociados** ("La Abogada de Tu Familia"), dirigida por la **Lic. Dora Edilia Tanaka Cervantes**. Impulsada por IA forense (Google Gemini) y adaptada a la legislación del Estado de Coahuila y federal mexicana.
 
-## Caracteristicas
-
-- **Auditoría Forense con Visión de Juez**: Análisis profundo de escritos legales basado en el marco jurídico de Coahuila.
-- **Scanner de Documentos**: Extracción de texto mediante OCR (PDF, Word, Imágenes) y clasificación automática.
-- **Gestión de Expedientes**: Control total de casos, clientes, abogados y tareas.
-- **Centro de Mensajería**: Comunicación vinculada a expedientes específicos.
-- **Pasarela de Pagos**: Integración con Stripe para cobros automatizados.
-
-## Guía de Instalación Local
-
-Para ejecutar Lexmarcorp IQ en tu propia computadora, sigue estos pasos:
-
-### 1. Requisitos Previos
-
-- **Node.js**: Versión 18 o superior.
-- **NPM**: Incluido con Node.js.
-- **Clave API de Gemini**: Consíguela gratis en [Google AI Studio](https://aistudio.google.com/app/apikey).
-
-### 2. Instalación
-
-1. Clona este repositorio o descarga los archivos.
-2. Abre una terminal en la carpeta del proyecto.
-3. Instala las dependencias:
-   ```bash
-   npm install
-   ```
-
-### 3. Configuración
-
-1. Copia el archivo de ejemplo de variables de entorno:
-   ```bash
-   cp .env.example .env
-   ```
-2. Edita el archivo `.env` y añade tu `GEMINI_API_KEY`.
-3. (Opcional) Configura tus llaves de Stripe si deseas usar la pasarela de pagos.
-
-### 4. Ejecución
-
-Para iniciar el servidor de desarrollo (Frontend y Backend simultáneamente):
-```bash
-npm run dev
-```
-La aplicación estará disponible en `http://localhost:3000`.
+## Características de Alto Valor
+- **Liquidación Forense Mercantil + Semáforo Anti-Usura SCJN**: Cálculo de intereses moratorios/ordinarios con tesis 1a./J. 47/2014 y generación de planilla judicial en Word (.docx).
+- **Duelo Procesal**: Confrontación cruzada de Demanda vs Contestación con fijación de litis, Onus Probandi y generación de pliego de posiciones e interrogatorios.
+- **Cómputo Inteligente de Términos Judiciales**: Calendario judicial oficial con días inhábiles y términos de gracia para vencimientos fatales.
+- **Línea de Tiempo Procesal (Tracking)**: Cronología de 6 etapas e informes ejecutivos automáticos para clientes en Word y WhatsApp.
+- **Auditoría Forense con Visión de Juez**: Análisis y blindaje inatacable de escritos judiciales con exportación oficial a Microsoft Word (.docx).
+- **Scanner con OCR**: Digitalización inmediata de autos, acuerdos y expedientes.
+- **Firma Legal-Contable-Psicológica**: Tareas, clientes, expedientes y control financiero.
 
 ---
+© 2026 Edilia Tanaka y Asociados - Firma Legal-Contable-Psicológica.
 
 ## Despliegue en Producción (Independent)
 
@@ -65,9 +31,5 @@ Puedes contenerizar la aplicación para ejecutarla en cualquier servidor con per
 
 ---
 
-## Contribución
-
-Si deseas mejorar Lexmarcorp IQ, siéntete libre de abrir un Pull Request o reportar problemas en GitHub.
-
 ---
-© 2024 Lexmarcorp Legal Tech.
+© 2026 Edilia Tanaka y Asociados - Firma Legal-Contable-Psicológica. Todos los derechos reservados.

@@ -353,14 +353,14 @@ const Payments = () => {
               <div className="flex flex-col items-center text-center space-y-4">
                 <div className="p-4 bg-white border-2 border-slate-100 rounded-2xl shadow-sm">
                   <img 
-                    src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=STP|LEXMARCORP|646180123456789012|${transferAmount}`} 
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=STP|EDILIA_TANAKA|646180123456789012|${transferAmount}`} 
                     alt="QR Transferencia" 
                     className="w-40 h-40"
                     referrerPolicy="no-referrer"
                   />
                 </div>
                 <div>
-                  <h4 className="font-bold text-slate-900">SPIN by OXXO</h4>
+                  <h4 className="font-bold text-slate-900">SPIN by OXXO / Transferencia</h4>
                   <p className="text-xs text-slate-500 uppercase tracking-widest font-bold">Escanea para pagar</p>
                 </div>
               </div>
@@ -368,7 +368,7 @@ const Payments = () => {
               <div className="space-y-4 bg-slate-50 p-6 rounded-2xl border border-slate-100">
                 <div>
                   <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Beneficiario</label>
-                  <p className="text-sm font-bold text-slate-900">LEXMARCORP S.A. DE C.V.</p>
+                  <p className="text-sm font-bold text-slate-900">EDILIA TANAKA Y ASOCIADOS</p>
                 </div>
                 <div className="grid grid-cols-1 gap-4">
                   <div>

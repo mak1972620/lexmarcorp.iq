@@ -257,7 +257,7 @@ export default function DocumentScanner() {
             {loading ? (
               <div className="h-full flex flex-col items-center justify-center text-slate-500 space-y-4">
                 <Loader2 size={32} className="animate-spin text-amber-500" />
-                <p className="text-sm font-medium animate-pulse">Lexmarcorp IQ está extrayendo el texto y analizando...</p>
+                <p className="text-sm font-medium animate-pulse">Tanaka Legal IQ está extrayendo el texto y analizando...</p>
               </div>
             ) : result ? (
               <div className="prose prose-sm prose-amber max-w-none markdown-body">

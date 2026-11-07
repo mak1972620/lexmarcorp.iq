@@ -616,8 +616,8 @@ EXCEPCIONES Y DEFENSAS:
                   </div>
 
                   <div className="text-xs space-y-1 bg-indigo-50/70 p-3 rounded-lg border border-indigo-200 text-indigo-950">
-                    <span className="font-bold text-indigo-900 flex items-center gap-1">
-                      <Sparkles className="w-3.5 h-3.5 text-indigo-600" /> Estrategia de Desvirtuación Lexmarcorp IQ:
+                    <span className="font-bold text-amber-900 flex items-center gap-1">
+                      <Sparkles className="w-3.5 h-3.5 text-amber-600" /> Estrategia de Desvirtuación Tanaka Legal IQ:
                     </span>
                     <p className="leading-relaxed">{exc.estrategiaDesvirtuacion}</p>
                   </div>

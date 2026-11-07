@@ -181,8 +181,9 @@ El presente cómputo se encuentra estrictamente apegado a lo dispuesto por los $
 
 DOY FE.
 
-LIC. ABOGADO PATRONO / APODERADO LEGAL
-Lexmarcorp IQ - Sistema de Blindaje Procesal`;
+LIC. DORA EDILIA TANAKA CERVANTES
+EDILIA TANAKA Y ASOCIADOS - "La Abogada de Tu Familia"
+Tanaka Legal IQ - Sistema de Blindaje Procesal`;
   }, [resultado, expedienteNum, materia, partes, juzgado, conceptoTermino, tipoNotificacion]);
 
   // Guardar como tarea en el expediente activo

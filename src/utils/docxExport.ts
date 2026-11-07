@@ -31,13 +31,19 @@ export interface JudicialDocxOptions {
  * - Margen de costura judicial (3.5 cm izquierdo, 2 cm derecho, 2.5 cm superior/inferior)
  * - Tipografía Arial 12pt con interlineado 1.5 y texto justificado
  * - Detección inteligente de secciones (Proemio, Prestaciones, Hechos, Derecho, Pruebas, Petitorios, Protesto)
- * - Calce formal de firmas y sello de auditoría forense Lexmarcorp IQ
+ * - Calce formal de firmas y sello de auditoría forense Tanaka Legal IQ
  */
 export async function generateJudicialDocx(
   text: string, 
   options: JudicialDocxOptions = {}
 ): Promise<Blob> {
-  const { title = 'Escrito Judicial', materia = 'Civil', rubro, firmante, selloCripto } = options;
+  const { 
+    title = 'Escrito Judicial', 
+    materia = 'Civil', 
+    rubro, 
+    firmante = 'LIC. DORA EDILIA TANAKA CERVANTES\nCÉDULA PROFESIONAL EN TRÁMITE / REGISTRADA\nEDILIA TANAKA Y ASOCIADOS - "LA ABOGADA DE TU FAMILIA"', 
+    selloCripto 
+  } = options;
 
   const paragraphs: Paragraph[] = [];
 
@@ -231,7 +237,7 @@ export async function generateJudicialDocx(
         },
         children: [
           new TextRun({
-            text: `[ VALIDACIÓN FORENSE LEXMARCORP IQ - SELLO: ${selloCripto} ]`,
+            text: `[ EXPEDIENTE AUDITADO - FIRMA LEGAL EDILIA TANAKA Y ASOCIADOS - SELLO: ${selloCripto} ]`,
             font: 'Courier New',
             size: 18,
             color: '64748B',
@@ -245,7 +251,7 @@ export async function generateJudicialDocx(
   // Crear el documento Word con configuración de página judicial mexicana
   const doc = new Document({
     title,
-    description: `Escrito Judicial en Materia ${materia} generado con Lexmarcorp IQ`,
+    description: `Escrito Judicial en Materia ${materia} generado con Tanaka Legal IQ`,
     styles: {
       default: {
         document: {
@@ -279,7 +285,7 @@ export async function generateJudicialDocx(
                 alignment: AlignmentType.RIGHT,
                 children: [
                   new TextRun({
-                    text: `Lexmarcorp IQ | Materia ${materia}`,
+                    text: `EDILIA TANAKA Y ASOCIADOS | "La Abogada de Tu Familia" | Materia ${materia}`,
                     size: 16,
                     color: '94A3B8',
                     font: 'Arial',

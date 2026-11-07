@@ -961,7 +961,7 @@ export default function Templates() {
                   type="text"
                   value={formDescription}
                   onChange={(e) => setFormDescription(e.target.value)}
-                  placeholder="Ej. 'Modelo estándar aplicable a juicios familiares o para resguardo de bienes corporativos de socios de Lexmarcorp.'"
+                  placeholder="Ej. 'Modelo estándar aplicable a juicios de alimentos, custodia familiar o defensa mercantil en Coahuila.'"
                   className="w-full bg-slate-50 border border-slate-200 text-slate-800 text-xs rounded-lg p-2.5 focus:outline-none focus:ring-1 focus:ring-amber-500"
                 />
               </div>

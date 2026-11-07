@@ -38,7 +38,7 @@ const Sidebar = () => {
     { icon: MessageSquare, label: 'Mensajes', path: '/mensajes', roles: ['admin', 'abogado', 'cliente'] },
     { icon: CreditCard, label: 'Pagos', path: '/pagos', roles: ['admin', 'abogado', 'cliente'] },
     { icon: ScanText, label: 'Visión Legal', path: '/scanner', roles: ['admin', 'abogado', 'cliente'] },
-    { icon: BrainCircuit, label: 'Lexmarcorp IQ', path: '/auditor', roles: ['admin', 'abogado'] },
+    { icon: BrainCircuit, label: 'Tanaka Legal IQ', path: '/auditor', roles: ['admin', 'abogado'] },
     { icon: Swords, label: 'Duelo Procesal', path: '/duelo-procesal', roles: ['admin', 'abogado'] },
     { icon: Clock, label: 'Términos Judiciales', path: '/terminos', roles: ['admin', 'abogado', 'cliente'] },
     { icon: Calculator, label: 'Liquidación & Usura', path: '/liquidacion', roles: ['admin', 'abogado'] },
@@ -50,19 +50,26 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="w-64 bg-slate-950 text-white h-screen flex flex-col border-r border-white/10">
-      <div className="p-6 flex items-center gap-3 border-b border-white/5">
-        <div className="w-14 h-14 rounded-lg flex items-center justify-center overflow-hidden bg-transparent">
+    <div className="w-64 bg-slate-950 text-white h-screen flex flex-col border-r border-amber-500/20 shadow-2xl">
+      <div className="p-5 flex items-center gap-3 border-b border-amber-500/20 bg-gradient-to-b from-slate-900 to-slate-950">
+        <div className="w-13 h-13 rounded-xl flex items-center justify-center overflow-hidden border border-amber-500/40 bg-black shadow-md shadow-amber-500/10">
           <img 
-            src="/logo.png" 
-            alt="Lexmarcorp Logo" 
-            className="w-full h-full object-contain"
-            onError={(e) => { e.currentTarget.src = 'https://ui-avatars.com/api/?name=L&background=f59e0b&color=fff&font-size=0.7&bold=true'; }}
+            src="/logo_tanaka.png" 
+            alt="Edilia Tanaka Logo" 
+            className="w-full h-full object-cover"
+            onError={(e) => { e.currentTarget.src = '/logo.png'; }}
           />
         </div>
-        <div>
-          <h1 className="font-bold text-base md:text-lg leading-tight tracking-tight text-amber-500">LEXMARCORP</h1>
-          <p className="text-[10px] bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 bg-clip-text text-transparent font-bold tracking-widest uppercase">CONSULTOR.IA</p>
+        <div className="min-w-0 flex-1">
+          <h1 className="font-black text-sm md:text-base leading-tight tracking-wider text-amber-400 truncate">
+            EDILIA TANAKA
+          </h1>
+          <p className="text-[10px] text-amber-200/90 font-bold tracking-widest uppercase">
+            Y ASOCIADOS
+          </p>
+          <span className="text-[9px] text-slate-400 italic block truncate mt-0.5">
+            "La Abogada de Tu Familia"
+          </span>
         </div>
       </div>
 

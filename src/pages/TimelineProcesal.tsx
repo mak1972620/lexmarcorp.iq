@@ -297,7 +297,7 @@ export default function TimelineProcesal() {
           demandado: partes.split(/ vs\.? /i)[1] || 'PARTE DEMANDADA',
           juicio: 'INFORME DE AUDITORÍA Y EVOLUCIÓN PROCESAL'
         },
-        firmante: 'LEXMARCORP ABOGADOS & ASOCIADOS',
+        firmante: 'LIC. DORA EDILIA TANAKA CERVANTES\nEDILIA TANAKA Y ASOCIADOS - "LA ABOGADA DE TU FAMILIA"\nOFICINA: ADOLFO LÓPEZ MATEOS #730, COL. BENITO JUÁREZ\nTELS: 877-100-9702, 877-119-2314, 877-772-0656',
         selloCripto: Math.random().toString(16).substring(2, 10).toUpperCase()
       });
 

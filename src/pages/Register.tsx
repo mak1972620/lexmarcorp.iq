@@ -65,14 +65,14 @@ const Register = () => {
             <div className="w-16 h-16 rounded-xl flex items-center justify-center overflow-hidden bg-transparent">
               <img 
                 src="/logo.png" 
-                alt="Lexmarcorp Logo" 
+                alt="Logo Edilia Tanaka" 
                 className="w-full h-full object-contain"
-                onError={(e) => { e.currentTarget.src = 'https://ui-avatars.com/api/?name=L&background=f59e0b&color=fff&font-size=0.7&bold=true'; }}
+                onError={(e) => { e.currentTarget.src = 'https://ui-avatars.com/api/?name=ET&background=d97706&color=fff&font-size=0.7&bold=true'; }}
               />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-amber-600 tracking-tight">LEXMARCORP</h1>
-              <p className="text-xs bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 bg-clip-text text-transparent font-bold uppercase tracking-widest">CONSULTOR.IA</p>
+              <h1 className="text-xl font-black text-amber-500 tracking-tight">EDILIA TANAKA</h1>
+              <p className="text-[10px] text-amber-400 font-bold uppercase tracking-widest">Y ASOCIADOS • LEGAL IQ</p>
             </div>
           </div>
 

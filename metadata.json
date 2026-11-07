@@ -1,6 +1,6 @@
 {
-  "name": "LEXMARCORP CONSULTOR.IA",
-  "description": "Plataforma integral de gestión legal para abogados y clientes con automatización, expedientes, tareas y pagos.",
+  "name": "TANAKA LEGAL IQ - EDILIA TANAKA Y ASOCIADOS",
+  "description": "Suite integral de gestión y blindaje legal con IA para la Firma Legal Edilia Tanaka y Asociados.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

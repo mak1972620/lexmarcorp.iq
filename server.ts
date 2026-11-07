@@ -70,7 +70,7 @@ try {
   db.pragma("synchronous = NORMAL");
 }
 
-const JWT_SECRET = process.env.JWT_SECRET === "Secret value" || !process.env.JWT_SECRET ? "lexmarcorp-secret-key-2024" : process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET === "Secret value" || !process.env.JWT_SECRET ? "tanaka-legal-secret-key-2026" : process.env.JWT_SECRET;
 
 
 // Initialize Database
@@ -204,37 +204,32 @@ db.exec(`
   );
 `);
 
-// Seed Corporate Admin if not exists
-const adminExists = db.prepare("SELECT * FROM users WHERE LOWER(email) = ?").get("admin@lexmarcorp.com");
-if (!adminExists) {
-  const hashedPassword = bcrypt.hashSync("LexmarCorp!2026", 10);
+// Seed Lic. Dora Edilia Tanaka Cervantes as Principal Admin & Owner
+const tanakaHashed = bcrypt.hashSync("Tanaka2026!", 10);
+const tanakaUser = db.prepare("SELECT * FROM users WHERE LOWER(email) = ?").get("tanaka@ediliatanaka.com");
+if (!tanakaUser) {
   db.prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)").run(
-    "DIRECTOR GENERAL - LEXMARCORP",
-    "admin@lexmarcorp.com",
-    hashedPassword,
+    "Lic. Dora Edilia Tanaka Cervantes",
+    "tanaka@ediliatanaka.com",
+    tanakaHashed,
     "admin"
   );
 } else {
-  db.prepare("UPDATE users SET name = ? WHERE id = 1").run(
-    "DIRECTOR GENERAL - LEXMARCORP"
+  db.prepare("UPDATE users SET name = ?, password = ?, role = 'admin' WHERE LOWER(email) = ?").run(
+    "Lic. Dora Edilia Tanaka Cervantes",
+    tanakaHashed,
+    "tanaka@ediliatanaka.com"
   );
 }
 
-// Seed Demo Lawyer User for testing / client sharing
-const demoUserExists = db.prepare("SELECT * FROM users WHERE LOWER(email) = ?").get("invitada@lexmarcorp.com");
-if (!demoUserExists) {
-  const demoHashedPassword = bcrypt.hashSync("Invitada2026!", 10);
-  db.prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)").run(
-    "Lic. Abogada Titular",
-    "invitada@lexmarcorp.com",
-    demoHashedPassword,
-    "abogado"
+// Ensure ID 1 also reflects her name and credentials
+try {
+  db.prepare("UPDATE users SET name = ?, email = ? WHERE id = 1").run(
+    "Lic. Dora Edilia Tanaka Cervantes",
+    "tanaka@ediliatanaka.com"
   );
-} else {
-  db.prepare("UPDATE users SET name = ? WHERE LOWER(email) = ?").run(
-    "Lic. Abogada Titular",
-    "invitada@lexmarcorp.com"
-  );
+} catch (e) {
+  // Ignored if duplicate email
 }
 
 // Ensure system goals are established
@@ -411,10 +406,10 @@ async function startServer() {
         parts: [{ text: m.text }]
       }));
 
-      const systemInstruction = `Eres LexmarIQ, un asistente jurídico experto integrado en la plataforma LexmarCorp. 
-El usuario actual es: ${req.user?.name || 'Colega'} (Rol: ${req.user?.role || 'Desconocido'}).
-Ayuda al usuario a redactar escritos, responder dudas jurídicas (enfocado a México y el Estado de Coahuila), e interpretar leyes. 
-Usa un tono profesional, claro, empático y objetivo. Responde en Markdown de forma estructurada, usando listas y negritas cuando sea conveniente.`;
+      const systemInstruction = `Eres Tanaka Legal IQ, un asistente jurídico experto integrado en la firma legal 'Edilia Tanaka y Asociados' ("La Abogada de Tu Familia"). 
+El usuario actual es: ${req.user?.name || 'Lic. Dora Edilia Tanaka Cervantes'} (Rol: ${req.user?.role || 'Titular'}).
+Ayuda al usuario a redactar escritos judiciales, responder dudas procesales (especialista en México y el Estado de Coahuila), e interpretar leyes de forma contundente y blindada. 
+Usa un tono profesional, elegante, empático y de alta precisión técnica. Responde en Markdown de forma estructurada, usando listas y negritas cuando sea conveniente.`;
 
       let response;
       try {
@@ -442,7 +437,7 @@ Usa un tono profesional, claro, empático y objetivo. Responde en Markdown de fo
       res.json({ text });
     } catch (err: any) {
       console.error("Gemini API Error:", err);
-      res.status(500).json({ error: err.message || "Error al comunicarse con LexmarIQ." });
+      res.status(500).json({ error: err.message || "Error al comunicarse con Tanaka Legal IQ." });
     }
   });
 
@@ -1577,7 +1572,7 @@ Presenta tu respuesta estructurada con encabezados claros (usa Markdown).`;
         apiKey,
         httpOptions: {
           headers: {
-            "User-Agent": "lexmarcorp-ai-studio"
+            "User-Agent": "tanaka-legal-iq"
           }
         }
       });
@@ -1666,13 +1661,13 @@ Por favor, redacta el borrador definitivo con formalidad profesional:
         apiKey,
         httpOptions: {
           headers: {
-            "User-Agent": "lexmarcorp-ai-studio"
+            "User-Agent": "tanaka-legal-iq"
           }
         }
       });
 
       const systemInstruction = `
-# ROL: ESTRATEGA PROCESAL LITIGANTE SENIOR Y PROYECTISTA JUDICIAL MEXICANO (LEXMARCORP IQ)
+# ROL: ESTRATEGA PROCESAL LITIGANTE SENIOR Y PROYECTISTA JUDICIAL MEXICANO (FIRMA EDILIA TANAKA Y ASOCIADOS)
 Eres una eminencia en derecho procesal mexicano (materia mercantil, civil, familiar y laboral).
 Tu especialidad es el análisis forense de la Litis: confrontar la Demanda inicial contra la Contestación de demanda, determinar la distribución exacta de la carga probatoria (Onus Probandi según los Arts. 1194 al 1196 del Código de Comercio o Códigos Procesales Civiles), descubrir contradicciones, desarticular excepciones de la contraria y diseñar el armamento probatorio perfecto:
 1. Posiciones confesionales que acorralen al absolvente (redactadas en sentido afirmativo, claras, precisas, no insidiosas, sin contener más de un hecho).
@@ -1888,14 +1883,14 @@ Realiza el cruce forense de la litis y devuelve ÚNICAMENTE el objeto JSON reque
         apiKey,
         httpOptions: {
           headers: {
-            "User-Agent": "lexmarcorp-ai-studio"
+            "User-Agent": "tanaka-legal-iq"
           }
         }
       });
 
       const systemInstruction = `
-# ROL: DIRECTOR DE COMUNICACIÓN JURÍDICA Y ESTRATEGA LEGAL (LEXMARCORP IQ)
-Eres el encargado de comunicación transparente y ejecutiva entre el despacho y sus clientes de alto perfil.
+# ROL: DIRECTOR DE COMUNICACIÓN JURÍDICA Y ESTRATEGA LEGAL (EDILIA TANAKA Y ASOCIADOS)
+Eres el encargado de comunicación transparente y ejecutiva entre la firma legal Edilia Tanaka y Asociados y sus clientes de alto perfil.
 Tu objetivo es transformar una lista de acuerdos técnicos judiciales e hitos procesales mexicanos en un **INFORME EJECUTIVO Y RESUMEN PARA EL CLIENTE**.
 
 # DIRECTRICES:
@@ -1952,20 +1947,20 @@ Por favor, redacta el Informe Ejecutivo para el cliente con la estructura requer
 
   // Google Auth Simulation
   app.get("/api/auth/google/url", (req, res) => {
-    res.json({ url: "/auth/callback?email=invitada@lexmarcorp.com" });
+    res.json({ url: "/auth/callback?email=invitada@ediliatanaka.com" });
   });
 
   app.get("/auth/callback", (req, res) => {
-    const email = (req.query.email as string || "invitada@lexmarcorp.com").trim().toLowerCase();
+    const email = (req.query.email as string || "invitada@ediliatanaka.com").trim().toLowerCase();
     
     // Look up user in DB matching email
     let user = db.prepare("SELECT * FROM users WHERE LOWER(email) = ?").get(email);
     
     if (!user) {
       // If user doesn't exist, seed them
-      const name = "Lic. Abogada Titular";
-      const role = "abogado";
-      const hashedPassword = bcrypt.hashSync("Invitada2026!", 10);
+      const name = "Lic. Dora Edilia Tanaka Cervantes";
+      const role = "admin";
+      const hashedPassword = bcrypt.hashSync("Tanaka2026!", 10);
       
       const insertResult = db.prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)").run(
         name,
@@ -1991,8 +1986,8 @@ Por favor, redacta el Informe Ejecutivo para el cliente con la estructura requer
       <html>
         <body style="background: #020617; color: #f59e0b; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: sans-serif;">
           <div style="width: 60px; height: 60px; border: 4px solid #f59e0b; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-          <h2 style="margin-top: 20px; color: #f59e0b; font-weight: bold; letter-spacing: 0.05em;">LEXMARCORP</h2>
-          <p style="color: #cbd5e1; font-size: 14px; margin-top: 10px;">Iniciando sesión con Google como ${user.name} (${user.role === 'admin' ? 'Administrador' : 'Cliente'})...</p>
+          <h2 style="margin-top: 20px; color: #f59e0b; font-weight: bold; letter-spacing: 0.05em;">EDILIA TANAKA Y ASOCIADOS</h2>
+          <p style="color: #cbd5e1; font-size: 14px; margin-top: 10px;">Iniciando sesión como ${user.name}...</p>
           <script>
             try {
               localStorage.setItem('token', '${token}');

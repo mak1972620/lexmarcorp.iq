@@ -36,24 +36,25 @@ const Login = () => {
       {/* Left: Form */}
       <div className="flex-1 flex flex-col justify-center px-8 sm:px-12 lg:px-24 xl:px-32 bg-white">
         <div className="max-w-md w-full mx-auto">
-          <div className="flex items-center gap-3 mb-12">
-            <div className="w-16 h-16 rounded-xl flex items-center justify-center overflow-hidden bg-transparent">
+          <div className="flex items-center gap-4 mb-8">
+            <div className="w-16 h-16 rounded-xl flex items-center justify-center overflow-hidden bg-black border-2 border-amber-500/40 shadow-lg shadow-amber-500/20">
               <img 
-                src="/logo.png" 
-                alt="Lexmarcorp Logo" 
-                className="w-full h-full object-contain"
-                onError={(e) => { e.currentTarget.src = 'https://ui-avatars.com/api/?name=L&background=f59e0b&color=fff&font-size=0.7&bold=true'; }}
+                src="/logo_tanaka.png" 
+                alt="Edilia Tanaka Logo" 
+                className="w-full h-full object-cover"
+                onError={(e) => { e.currentTarget.src = '/logo.png'; }}
               />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-amber-600 tracking-tight">LEXMARCORP</h1>
-              <p className="text-xs bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 bg-clip-text text-transparent font-bold uppercase tracking-widest">CONSULTOR.IA</p>
+              <h1 className="text-xl md:text-2xl font-black text-amber-500 tracking-wider">EDILIA TANAKA</h1>
+              <p className="text-[10px] text-amber-700 font-bold uppercase tracking-widest">Y ASOCIADOS • FIRMA LEGAL</p>
+              <p className="text-xs text-slate-500 italic mt-0.5 font-serif">"La Abogada de Tu Familia"</p>
             </div>
           </div>
 
-          <div className="mb-10">
-            <h2 className="text-3xl font-bold text-slate-900 mb-2">Bienvenido de nuevo</h2>
-            <p className="text-slate-500">Ingresa tus credenciales para acceder a tu panel legal.</p>
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-slate-900 mb-1">Portal Jurídico Inteligente</h2>
+            <p className="text-xs text-slate-500">Suite de litigio, auditoría forense y control de términos procesales.</p>
           </div>
 
           {error && (
@@ -72,7 +73,7 @@ const Login = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all"
-                  placeholder="ejemplo@lexmarcorp.com"
+                  placeholder="tanaka@ediliatanaka.com"
                   required
                 />
               </div>
@@ -120,33 +121,35 @@ const Login = () => {
             <span className="text-sm font-bold text-slate-700">Iniciar sesión con Google</span>
           </button>
 
-          {/* Botón de Demostración 1-Clic para Clientes / Abogada */}
+          {/* Botón de Demostración 1-Clic para la Lic. Dora Edilia Tanaka */}
           <button
             type="button"
             onClick={async () => {
-              setEmail('invitada@lexmarcorp.com');
-              setPassword('Invitada2026!');
+              const demoEmail = 'tanaka@ediliatanaka.com';
+              const demoPass = 'Tanaka2026!';
+              setEmail(demoEmail);
+              setPassword(demoPass);
               try {
                 const res = await fetch('/api/auth/login', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ email: 'invitada@lexmarcorp.com', password: 'Invitada2026!' }),
+                  body: JSON.stringify({ email: demoEmail, password: demoPass }),
                 });
                 const data = await res.json();
                 if (res.ok) {
                   login(data.user, data.token);
                   navigate('/dashboard');
                 } else {
-                  setError(data.error || 'Error al iniciar sesión demo');
+                  setError(data.error || 'Error al iniciar sesión');
                 }
               } catch (_) {
                 setError('Error al conectar con el servidor');
               }
             }}
-            className="w-full mt-3 py-3 rounded-xl border border-amber-400 bg-gradient-to-r from-amber-50 to-amber-100 hover:from-amber-100 hover:to-amber-200 text-amber-950 font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm"
+            className="w-full mt-3 py-3.5 px-4 rounded-xl border border-amber-500/50 bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 hover:border-amber-400 text-amber-400 font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg shadow-amber-500/10 group"
           >
-            <span>⚖️</span>
-            <span>Acceso Demostración para Abogada Invitada (1 Clic)</span>
+            <span className="text-base group-hover:scale-110 transition-transform">⚖️</span>
+            <span className="tracking-wide">Entrar como Lic. Dora Edilia Tanaka Cervantes (1 Clic)</span>
           </button>
 
           <div className="mt-8 pt-8 border-t border-slate-100">
