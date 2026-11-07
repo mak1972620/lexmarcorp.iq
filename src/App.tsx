@@ -25,6 +25,7 @@ import Templates from './pages/Templates';
 import LiquidacionForense from './pages/LiquidacionForense';
 import DueloProcesal from './pages/DueloProcesal';
 import TerminosJudiciales from './pages/TerminosJudiciales';
+import TimelineProcesal from './pages/TimelineProcesal';
 import Profile from './pages/Profile';
 import { motion, AnimatePresence } from 'motion/react';
 import AiAssistant from './components/AiAssistant';
@@ -78,6 +79,7 @@ export default function App() {
           <Route path="/liquidacion" element={<ProtectedRoute roles={['admin', 'abogado']}><LiquidacionForense /></ProtectedRoute>} />
           <Route path="/duelo-procesal" element={<ProtectedRoute roles={['admin', 'abogado']}><DueloProcesal /></ProtectedRoute>} />
           <Route path="/terminos" element={<ProtectedRoute><TerminosJudiciales /></ProtectedRoute>} />
+          <Route path="/timeline" element={<ProtectedRoute><TimelineProcesal /></ProtectedRoute>} />
           <Route path="/plantillas" element={<ProtectedRoute roles={['admin', 'abogado']}><Templates /></ProtectedRoute>} />
           <Route path="/scanner" element={<ProtectedRoute><DocumentScanner /></ProtectedRoute>} />
           <Route path="/perfil" element={<ProtectedRoute><Profile /></ProtectedRoute>} />

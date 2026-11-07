@@ -149,6 +149,18 @@ db.exec(`
     FOREIGN KEY(sender_id) REFERENCES users(id)
   );
 
+  CREATE TABLE IF NOT EXISTS case_milestones (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    case_id INTEGER NOT NULL,
+    stage TEXT NOT NULL,
+    title TEXT NOT NULL,
+    date TEXT NOT NULL,
+    status TEXT DEFAULT 'completado',
+    description TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(case_id) REFERENCES cases(id) ON DELETE CASCADE
+  );
+
   CREATE TABLE IF NOT EXISTS audit_logs (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     action TEXT NOT NULL,
@@ -1767,6 +1779,157 @@ Realiza el cruce forense de la litis y devuelve ÚNICAMENTE el objeto JSON reque
     } catch (error: any) {
       console.error("Error en Duelo Procesal AI:", error);
       res.status(500).json({ error: "Error de IA al procesar el duelo procesal: " + error.message });
+    }
+  });
+
+  // ==========================================
+  // FUNCIÓN 5: LÍNEA DE TIEMPO PROCESAL (TRACKING)
+  // ==========================================
+
+  // Obtener hitos de un expediente
+  app.get("/api/cases/:id/milestones", authenticate, (req: any, res) => {
+    try {
+      const milestones = db.prepare("SELECT * FROM case_milestones WHERE case_id = ? ORDER BY date ASC, id ASC").all(req.params.id);
+      res.json(milestones);
+    } catch (error: any) {
+      console.error("Error getting milestones:", error);
+      res.status(500).json({ error: "Error al obtener la línea de tiempo del expediente." });
+    }
+  });
+
+  // Agregar un hito procesal al expediente
+  app.post("/api/cases/:id/milestones", authenticate, (req: any, res) => {
+    try {
+      const { stage, title, date, status = "completado", description = "" } = req.body;
+      if (!stage || !title || !date) {
+        return res.status(400).json({ error: "Etapa, título y fecha son obligatorios." });
+      }
+
+      const stmt = db.prepare(
+        "INSERT INTO case_milestones (case_id, stage, title, date, status, description) VALUES (?, ?, ?, ?, ?, ?)"
+      );
+      const result = stmt.run(req.params.id, stage, title, date, status, description);
+
+      db.prepare("INSERT INTO audit_logs (action, user_id, entity) VALUES (?, ?, ?)").run(
+        `NUEVO_HITO_PROCESAL: ${title}`,
+        req.user.id,
+        `case_${req.params.id}`
+      );
+
+      res.status(201).json({
+        id: result.lastInsertRowid,
+        case_id: req.params.id,
+        stage,
+        title,
+        date,
+        status,
+        description
+      });
+    } catch (error: any) {
+      console.error("Error creating milestone:", error);
+      res.status(500).json({ error: "Error al registrar el hito procesal." });
+    }
+  });
+
+  // Actualizar un hito
+  app.put("/api/milestones/:id", authenticate, (req: any, res) => {
+    try {
+      const { stage, title, date, status, description } = req.body;
+      db.prepare(
+        "UPDATE case_milestones SET stage = ?, title = ?, date = ?, status = ?, description = ? WHERE id = ?"
+      ).run(stage, title, date, status, description, req.params.id);
+
+      res.json({ success: true });
+    } catch (error: any) {
+      console.error("Error updating milestone:", error);
+      res.status(500).json({ error: "Error al actualizar el hito procesal." });
+    }
+  });
+
+  // Eliminar un hito
+  app.delete("/api/milestones/:id", authenticate, (req: any, res) => {
+    try {
+      db.prepare("DELETE FROM case_milestones WHERE id = ?").run(req.params.id);
+      res.json({ success: true });
+    } catch (error: any) {
+      console.error("Error deleting milestone:", error);
+      res.status(500).json({ error: "Error al eliminar el hito procesal." });
+    }
+  });
+
+  // GENERAR RESUMEN EJECUTIVO PARA EL CLIENTE CON IA (GEMINI 3.8 FLASH)
+  app.post("/api/ai/resumen-cliente", authenticate, async (req: any, res) => {
+    try {
+      const { caseId, expediente = "", juzgado = "", partes = "", clienteNombre = "", hitos = [] } = req.body;
+
+      const apiKey = process.env.GEMINI_API_KEY;
+      if (!apiKey) {
+        return res.status(500).json({ error: "API Key de Gemini no configurada." });
+      }
+
+      const ai = new GoogleGenAI({
+        apiKey,
+        httpOptions: {
+          headers: {
+            "User-Agent": "lexmarcorp-ai-studio"
+          }
+        }
+      });
+
+      const systemInstruction = `
+# ROL: DIRECTOR DE COMUNICACIÓN JURÍDICA Y ESTRATEGA LEGAL (LEXMARCORP IQ)
+Eres el encargado de comunicación transparente y ejecutiva entre el despacho y sus clientes de alto perfil.
+Tu objetivo es transformar una lista de acuerdos técnicos judiciales e hitos procesales mexicanos en un **INFORME EJECUTIVO Y RESUMEN PARA EL CLIENTE**.
+
+# DIRECTRICES:
+1. LENGUAJE HUMANO, ELEGANTE Y CLARO: Cero tecnicismos incomprensibles. Si mencionas un término procesal (ej. "auto de radicación", "emplazamiento", "admisión de pruebas"), explícalo en una sola frase sencilla para que el cliente entienda su significado práctico.
+2. ESTRUCTURA DEL INFORME:
+   - 📌 **Resumen Ejecutivo:** Estado actual en 2 oraciones (dónde estamos hoy).
+   - 🏆 **Logros y Actuaciones Recientes:** Qué se realizó en las últimas semanas y qué resolvió el juzgado a nuestro favor o trámite.
+   - 🚀 **Siguiente Paso Procesal:** Qué toca hacer ahora (término, desahogo de audiencia o sentencia) y cuándo se espera el siguiente movimiento.
+   - 🛡️ **Evaluación de Riesgo y Posición:** Posición procesal (Favorable / Estable / Bajo Atención) y recomendación al cliente.
+   - 💬 **Mensaje Breve para WhatsApp:** Una versión corta y concisa (3 párrafos con viñetas) lista para copiar y pegar directamente en WhatsApp.
+3. TONO: Tranquilizador, proactivo, profesional, que proyecte total control del juicio y genere lealtad y confianza.
+`;
+
+      const prompt = `
+DATOS DEL EXPEDIENTE:
+- Número de Juicio: ${expediente || "EN TRÁMITE"}
+- Juzgado: ${juzgado || "JUZGADO COMPETENTE"}
+- Carátula: ${partes || "JUICIO MERCANTIL / CIVIL"}
+- Nombre del Cliente: ${clienteNombre || "Estimado(a) Cliente"}
+
+HISTORIAL DE HITOS PROCESALES Y ACUERDOS:
+${JSON.stringify(hitos, null, 2)}
+
+Por favor, redacta el Informe Ejecutivo para el cliente con la estructura requerida.
+`;
+
+      const response = await ai.models.generateContent({
+        model: GEMINI_FLASH,
+        contents: prompt,
+        config: {
+          systemInstruction,
+          temperature: 0.3,
+        }
+      });
+
+      const informeGenerado = response.text || "No fue posible generar el informe.";
+
+      db.prepare("INSERT INTO audit_logs (action, user_id, entity) VALUES (?, ?, ?)").run(
+        "GENERAR_RESUMEN_CLIENTE_AI",
+        req.user.id,
+        caseId ? `case_${caseId}` : "tracking"
+      );
+
+      res.json({
+        success: true,
+        informe: informeGenerado
+      });
+
+    } catch (error: any) {
+      console.error("Error generando resumen para cliente:", error);
+      res.status(500).json({ error: "Error de IA al generar el reporte: " + error.message });
     }
   });
 

@@ -18,7 +18,8 @@ import {
   Scroll,
   Calculator,
   Swords,
-  Clock
+  Clock,
+  GitCommit
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { cn } from '../types';
@@ -30,6 +31,7 @@ const Sidebar = () => {
     { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard', roles: ['admin', 'abogado', 'cliente'] },
     { icon: Users, label: 'Clientes', path: '/clientes', roles: ['admin', 'abogado'] },
     { icon: Briefcase, label: 'Expedientes', path: '/expedientes', roles: ['admin', 'abogado', 'cliente'] },
+    { icon: GitCommit, label: 'Tracking Procesal', path: '/timeline', roles: ['admin', 'abogado', 'cliente'] },
     { icon: CheckSquare, label: 'Tareas', path: '/tareas', roles: ['admin', 'abogado', 'cliente'] },
     { icon: FileText, label: 'Documentos', path: '/documentos', roles: ['admin', 'abogado', 'cliente'] },
     { icon: Scroll, label: 'Biblioteca de Plantillas', path: '/plantillas', roles: ['admin', 'abogado'] },
