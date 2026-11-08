@@ -695,39 +695,39 @@ En la fecha de su presentación judicial.`;
 
       {/* Tarjetas KPI de Resumen */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Suerte Principal</span>
-          <p className="text-xl font-bold text-slate-900 mt-1">
+        <div className="bg-[#121214] p-4 rounded-xl border border-[#27272A] shadow-md">
+          <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Suerte Principal</span>
+          <p className="text-xl font-bold text-white mt-1">
             ${calculo.capitalRemanente.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
           </p>
-          <span className="text-[11px] text-slate-500">
+          <span className="text-[11px] text-slate-400">
             {valSuertePrincipal > 0 && calculo.capitalRemanente < valSuertePrincipal ? 'Saldo amortizado' : 'Capital base inicial'}
           </span>
         </div>
 
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Días de Mora</span>
-          <p className="text-xl font-bold text-amber-600 mt-1">
+        <div className="bg-[#121214] p-4 rounded-xl border border-[#27272A] shadow-md">
+          <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Días de Mora</span>
+          <p className="text-xl font-bold text-[#D4AF37] mt-1">
             {calculo.diasTotales} días
           </p>
-          <span className="text-[11px] text-slate-500">
+          <span className="text-[11px] text-slate-400">
             {fechaInicioMora ? `Del ${fechaInicioMora} al ${fechaCorte}` : 'Ingresa la fecha de inicio'}
           </span>
         </div>
 
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Intereses Moratorios</span>
-          <p className="text-xl font-bold text-rose-600 mt-1">
+        <div className="bg-[#121214] p-4 rounded-xl border border-[#27272A] shadow-md">
+          <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Intereses Moratorios</span>
+          <p className="text-xl font-bold text-[#E5C058] mt-1">
             ${calculo.interesMoratorioTotal.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
           </p>
-          <span className="text-[11px] text-slate-500">
+          <span className="text-[11px] text-slate-400">
             Al {tasaMoratoriaMensual.toFixed(2)}% mensual
           </span>
         </div>
 
-        <div className="bg-slate-900 p-4 rounded-xl border border-slate-800 shadow-sm text-white">
-          <span className="text-xs font-semibold text-amber-400 uppercase tracking-wider">Total a Liquidar</span>
-          <p className="text-2xl font-black text-amber-400 mt-1">
+        <div className="bg-[#18181B] p-4 rounded-xl border border-[#D4AF37]/40 shadow-lg text-white">
+          <span className="text-xs font-semibold text-[#D4AF37] uppercase tracking-wider">Total a Liquidar</span>
+          <p className="text-2xl font-black text-[#D4AF37] mt-1">
             ${calculo.totalLiquidacion.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
           </p>
           <span className="text-[11px] text-slate-400">

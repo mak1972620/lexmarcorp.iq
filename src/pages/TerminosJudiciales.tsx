@@ -325,7 +325,7 @@ Tanaka Legal IQ - Sistema de Blindaje Procesal`;
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Columna Izquierda: Configuración del Cómputo */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-5">
+          <div className="bg-[#121214] p-6 rounded-xl border border-[#27272A] shadow-xl space-y-5">
             <h3 className="text-base font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
               <CalendarCheck className="w-5 h-5 text-emerald-600" />
               Parámetros de la Notificación & Plazo Procesal
@@ -493,7 +493,7 @@ Tanaka Legal IQ - Sistema de Blindaje Procesal`;
 
           {/* CRONOLOGÍA DETALLADA DÍA A DÍA */}
           {resultado && (
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden space-y-0">
+            <div className="bg-[#121214] rounded-xl border border-[#27272A] shadow-xl overflow-hidden space-y-0">
               <div className="p-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
                 <div>
                   <h3 className="font-bold text-sm text-slate-800">Cronología Procesal Detallada Paso a Paso</h3>
@@ -587,7 +587,7 @@ Tanaka Legal IQ - Sistema de Blindaje Procesal`;
 
         {/* Columna Derecha: Certificación Secretarial & Datos del Juicio */}
         <div className="space-y-6">
-          <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
+          <div className="bg-[#121214] p-5 rounded-xl border border-[#27272A] shadow-xl space-y-4">
             <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-2">
               <BookOpen className="w-4 h-4 text-emerald-600" />
               Datos del Juicio para la Certificación
@@ -647,7 +647,7 @@ Tanaka Legal IQ - Sistema de Blindaje Procesal`;
           </div>
 
           {/* Certificación Secretarial Escrita */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+          <div className="bg-[#121214] rounded-xl border border-[#27272A] shadow-xl overflow-hidden">
             <div className="p-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
               <span className="font-bold text-xs text-slate-800">Certificación Procesal Oficial</span>
               <div className="flex items-center gap-1.5">

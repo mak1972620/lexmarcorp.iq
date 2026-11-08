@@ -466,7 +466,7 @@ const Auditor = () => {
 
         {/* Right Output Area with Tabs */}
         <div className="space-y-6">
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 min-h-[600px] flex flex-col">
+          <div className="bg-[#121214] rounded-2xl border border-[#27272A] shadow-xl p-6 min-h-[600px] flex flex-col">
             {/* Elegant Tab Headers */}
             {result ? (
               <div id="reaf-output-header-tabs" className="flex border-b border-slate-200 mb-4">

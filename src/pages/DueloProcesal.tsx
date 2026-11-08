@@ -351,15 +351,15 @@ EXCEPCIONES Y DEFENSAS:
       {/* Formulario de Entrada Dual: Demanda vs Contestación */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Panel Izquierdo: Demanda Inicial */}
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col space-y-3">
-          <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+        <div className="bg-[#121214] p-5 rounded-xl border border-[#27272A] shadow-md flex flex-col space-y-3">
+          <div className="flex items-center justify-between border-b border-[#27272A] pb-2">
             <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
-              <h3 className="font-bold text-sm text-slate-800">1. Hechos de la Demanda Inicial</h3>
+              <span className="w-2.5 h-2.5 rounded-full bg-[#D4AF37]"></span>
+              <h3 className="font-bold text-sm text-[#D4AF37]">1. Hechos de la Demanda Inicial</h3>
             </div>
             <span className="text-[11px] text-slate-400 font-mono">{textoDemanda.length} caracteres</span>
           </div>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-slate-400">
             Pega el capítulo de hechos, prestaciones y documentos base de la acción formulados por la actora.
           </p>
           <textarea
@@ -367,20 +367,20 @@ EXCEPCIONES Y DEFENSAS:
             value={textoDemanda}
             onChange={(e) => setTextoDemanda(e.target.value)}
             placeholder="Pega aquí los hechos numerados de la demanda, las fechas clave, montos y títulos exhibidos..."
-            className="w-full p-3 border border-slate-300 rounded-lg text-xs leading-relaxed text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none font-mono"
+            className="w-full p-3 border border-[#27272A] bg-[#070A0F] rounded-lg text-xs leading-relaxed text-slate-200 focus:outline-none focus:border-[#D4AF37] resize-none font-mono"
           />
         </div>
 
         {/* Panel Derecho: Contestación y Excepciones */}
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col space-y-3">
-          <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+        <div className="bg-[#121214] p-5 rounded-xl border border-[#27272A] shadow-md flex flex-col space-y-3">
+          <div className="flex items-center justify-between border-b border-[#27272A] pb-2">
             <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-amber-600"></span>
-              <h3 className="font-bold text-sm text-slate-800">2. Contestación, Excepciones y Defensas</h3>
+              <span className="w-2.5 h-2.5 rounded-full bg-[#E5C058]"></span>
+              <h3 className="font-bold text-sm text-[#E5C058]">2. Contestación, Excepciones y Defensas</h3>
             </div>
             <span className="text-[11px] text-slate-400 font-mono">{textoContestacion.length} caracteres</span>
           </div>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-slate-400">
             Pega la contestación a cada hecho (admite, niega o ignora) y el capítulo de excepciones opuestas.
           </p>
           <textarea

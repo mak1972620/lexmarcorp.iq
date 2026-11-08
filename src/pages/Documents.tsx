@@ -278,21 +278,21 @@ const Documents = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-          <p className="text-slate-500 text-sm font-medium">Total Documentos</p>
-          <h3 className="text-2xl font-bold text-slate-900 mt-1">{docs.length}</h3>
+        <div className="bg-[#121214] p-6 rounded-2xl border border-[#27272A] shadow-md">
+          <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider">Total Documentos</p>
+          <h3 className="text-2xl font-bold text-white mt-1">{docs.length}</h3>
         </div>
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-          <p className="text-slate-500 text-sm font-medium">Etiquetas Activas</p>
-          <h3 className="text-2xl font-bold text-slate-900 mt-1">{uniqueTags}</h3>
+        <div className="bg-[#121214] p-6 rounded-2xl border border-[#27272A] shadow-md">
+          <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider">Etiquetas Activas</p>
+          <h3 className="text-2xl font-bold text-white mt-1">{uniqueTags}</h3>
         </div>
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-          <p className="text-slate-500 text-sm font-medium">Almacenamiento</p>
-          <h3 className="text-2xl font-bold text-slate-900 mt-1">{formatBytes(totalSize)}</h3>
+        <div className="bg-[#121214] p-6 rounded-2xl border border-[#27272A] shadow-md">
+          <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider">Almacenamiento</p>
+          <h3 className="text-2xl font-bold text-white mt-1">{formatBytes(totalSize)}</h3>
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+      <div className="bg-[#121214] rounded-2xl border border-[#27272A] shadow-xl overflow-hidden">
         <div className="p-4 border-b border-slate-100 flex flex-col md:flex-row gap-4 items-center justify-between">
           <div className="relative w-full md:w-96">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />

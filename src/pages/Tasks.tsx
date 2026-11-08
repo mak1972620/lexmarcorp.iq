@@ -134,27 +134,27 @@ const Tasks = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-          <p className="text-slate-500 text-sm font-medium">Pendientes</p>
-          <h3 className="text-2xl font-bold text-slate-900 mt-1">{tasks.filter(t => t.status === 'pendiente').length}</h3>
+        <div className="bg-[#121214] p-6 rounded-2xl border border-[#27272A] shadow-md">
+          <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider">Pendientes</p>
+          <h3 className="text-2xl font-bold text-white mt-1">{tasks.filter(t => t.status === 'pendiente').length}</h3>
         </div>
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-          <p className="text-slate-500 text-sm font-medium">En Progreso</p>
-          <h3 className="text-2xl font-bold text-slate-900 mt-1">{tasks.filter(t => t.status === 'en progreso').length}</h3>
+        <div className="bg-[#121214] p-6 rounded-2xl border border-[#27272A] shadow-md">
+          <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider">En Progreso</p>
+          <h3 className="text-2xl font-bold text-white mt-1">{tasks.filter(t => t.status === 'en progreso').length}</h3>
         </div>
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-          <p className="text-slate-500 text-sm font-medium">Completadas</p>
-          <h3 className="text-2xl font-bold text-slate-900 mt-1">{tasks.filter(t => t.status === 'completada').length}</h3>
+        <div className="bg-[#121214] p-6 rounded-2xl border border-[#27272A] shadow-md">
+          <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider">Completadas</p>
+          <h3 className="text-2xl font-bold text-white mt-1">{tasks.filter(t => t.status === 'completada').length}</h3>
         </div>
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-          <p className="text-slate-500 text-sm font-medium">Vencidas</p>
-          <h3 className="text-2xl font-bold text-red-600 mt-1">
+        <div className="bg-[#121214] p-6 rounded-2xl border border-[#27272A] shadow-md">
+          <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider">Vencidas</p>
+          <h3 className="text-2xl font-bold text-rose-400 mt-1">
             {tasks.filter(t => t.status !== 'completada' && isPast(new Date(t.due_date))).length}
           </h3>
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+      <div className="bg-[#121214] rounded-2xl border border-[#27272A] shadow-xl overflow-hidden">
         <div className="p-4 border-b border-slate-100 flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
           <div className="flex flex-wrap items-center gap-2">
             {['todas', 'pendiente', 'en progreso', 'completada'].map(s => (

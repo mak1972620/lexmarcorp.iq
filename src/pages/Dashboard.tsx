@@ -254,7 +254,6 @@ const Dashboard = () => {
       </div>
     </div>
   );
-  );
 };
 
 import { cn } from '../types';

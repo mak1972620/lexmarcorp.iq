@@ -39,9 +39,9 @@ const ProtectedRoute = ({ children, roles }: { children: React.ReactNode, roles?
   if (roles && !roles.includes(user.role)) return <Navigate to="/dashboard" replace />;
 
   return (
-    <div className="flex h-screen bg-[#070A0F] text-slate-100 overflow-hidden">
+    <div className="flex h-screen bg-[#121214] text-slate-100 overflow-hidden">
       <Sidebar />
-      <main className="flex-1 overflow-y-auto bg-[#070A0F]">
+      <main className="flex-1 overflow-y-auto bg-[#121214]">
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}

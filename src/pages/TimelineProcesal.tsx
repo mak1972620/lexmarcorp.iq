@@ -383,7 +383,7 @@ export default function TimelineProcesal() {
       </div>
 
       {/* Barra de Progreso y Stepper de Etapas Procesales Mexicanas */}
-      <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
+      <div className="bg-[#121214] p-6 rounded-xl border border-[#27272A] shadow-xl space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
           <div>
             <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
@@ -567,32 +567,32 @@ export default function TimelineProcesal() {
 
           {/* Timeline Visual Vertical */}
           {milestones.length === 0 ? (
-            <div className="bg-white p-12 rounded-xl border border-slate-200 text-center space-y-3 shadow-sm">
-              <GitCommit className="w-12 h-12 text-slate-300 mx-auto" />
-              <h3 className="font-bold text-slate-700 text-sm">No hay hitos procesales registrados</h3>
-              <p className="text-xs text-slate-500 max-w-md mx-auto">
+            <div className="bg-[#121214] p-12 rounded-xl border border-[#27272A] text-center space-y-3 shadow-md">
+              <GitCommit className="w-12 h-12 text-slate-500 mx-auto" />
+              <h3 className="font-bold text-slate-200 text-sm">No hay hitos procesales registrados</h3>
+              <p className="text-xs text-slate-400 max-w-md mx-auto">
                 Selecciona un expediente o haz clic en "Cargar Juicio Demo" para explorar cómo se mapea la cronología judicial y se genera el informe para clientes.
               </p>
             </div>
           ) : (
-            <div className="relative pl-6 sm:pl-8 space-y-6 before:content-[''] before:absolute before:left-3 sm:before:left-4 before:top-3 before:bottom-3 before:w-0.5 before:bg-slate-200">
+            <div className="relative pl-6 sm:pl-8 space-y-6 before:content-[''] before:absolute before:left-3 sm:before:left-4 before:top-3 before:bottom-3 before:w-0.5 before:bg-[#27272A]">
               {milestones.map((m, idx) => (
                 <div key={m.id || idx} className="relative group">
                   {/* Punto en la línea de tiempo */}
-                  <span className={`absolute -left-6 sm:-left-8 top-1.5 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all bg-white ${
+                  <span className={`absolute -left-6 sm:-left-8 top-1.5 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all bg-[#121214] ${
                     m.status === 'completado'
-                      ? 'border-emerald-500 text-emerald-600'
+                      ? 'border-[#D4AF37] text-[#D4AF37]'
                       : m.status === 'en_proceso'
-                      ? 'border-amber-500 text-amber-600 animate-pulse'
-                      : 'border-slate-300 text-slate-400'
+                      ? 'border-[#E5C058] text-[#E5C058] animate-pulse'
+                      : 'border-slate-700 text-slate-500'
                   }`}>
-                    {m.status === 'completado' && <CheckCircle2 className="w-3.5 h-3.5 fill-emerald-100" />}
+                    {m.status === 'completado' && <CheckCircle2 className="w-3.5 h-3.5 fill-[#D4AF37]/20" />}
                     {m.status === 'en_proceso' && <Clock className="w-3.5 h-3.5" />}
                     {m.status === 'pendiente' && <CircleDot className="w-3.5 h-3.5" />}
                   </span>
 
                   {/* Tarjeta del hito */}
-                  <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:border-blue-300 transition-all space-y-2">
+                  <div className="bg-[#121214] p-5 rounded-xl border border-[#27272A] shadow-md hover:border-[#D4AF37]/40 transition-all space-y-2">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-2">
                       <div className="flex items-center gap-2">
                         <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded bg-blue-100 text-blue-800">
