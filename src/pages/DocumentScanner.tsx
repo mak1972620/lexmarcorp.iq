@@ -204,25 +204,25 @@ export default function DocumentScanner() {
                   <button
                     onClick={analyzeDocument}
                     disabled={loading}
-                    className="px-4 py-2 text-sm font-medium text-white bg-amber-600 rounded-lg hover:bg-amber-700 disabled:opacity-50 flex items-center gap-2"
+                    className="px-5 py-2.5 text-xs font-black text-black bg-[#D4AF37] hover:bg-[#E5C058] rounded-xl shadow-md shadow-[#D4AF37]/20 disabled:opacity-50 flex items-center gap-2 transition-all cursor-pointer"
                   >
-                    {loading ? <Loader2 size={16} className="animate-spin" /> : <CheckCircle2 size={16} />}
+                    {loading ? <Loader2 size={16} className="animate-spin text-black" /> : <CheckCircle2 size={16} />}
                     {loading ? 'Analizando...' : 'Extraer Texto y Analizar'}
                   </button>
                 </div>
               </div>
             ) : (
               <div className="space-y-4">
-                <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto shadow-sm border border-slate-100">
-                  <Upload className="text-amber-500" size={24} />
+                <div className="w-16 h-16 bg-[#070A0F] rounded-full flex items-center justify-center mx-auto shadow-md border border-[#D4AF37]/40">
+                  <Upload className="text-[#D4AF37]" size={24} />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-slate-900">Arrastra tu documento aquí o haz clic en el botón</p>
-                  <p className="text-xs text-slate-500 mt-1">Soporta archivos desde tu PC, USB o Descargas (PDF, Word, TXT, PNG, JPG)</p>
+                  <p className="text-sm font-bold text-slate-100">Arrastra tu documento aquí o haz clic en el botón</p>
+                  <p className="text-xs text-slate-400 mt-1">Soporta archivos PDF, Word (.docx), TXT e Imágenes de acuerdos</p>
                 </div>
                 <button
                   onClick={() => fileInputRef.current?.click()}
-                  className="px-4 py-2 text-sm font-medium text-amber-700 bg-amber-100 rounded-lg hover:bg-amber-200 transition-colors flex items-center justify-center gap-2 mx-auto"
+                  className="px-5 py-2.5 text-xs font-black text-black bg-[#D4AF37] hover:bg-[#E5C058] rounded-xl shadow-md shadow-[#D4AF37]/20 transition-all flex items-center justify-center gap-2 mx-auto cursor-pointer"
                 >
                   <Upload size={16} />
                   Cargar desde PC / USB

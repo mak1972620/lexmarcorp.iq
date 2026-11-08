@@ -419,7 +419,7 @@ EXCEPCIONES Y DEFENSAS:
           <button
             onClick={handleEjecutarDuelo}
             disabled={loading}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md transition-all disabled:opacity-50 cursor-pointer"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#D4AF37] hover:bg-[#E5C058] text-black font-black text-sm shadow-lg shadow-[#D4AF37]/25 transition-all disabled:opacity-50 cursor-pointer"
           >
             {loading ? (
               <>
@@ -643,7 +643,7 @@ EXCEPCIONES Y DEFENSAS:
                 {resultado.pliegoPosicionesConfesional.map((pos) => (
                   <div key={pos.numero} className="p-4 hover:bg-indigo-50/30 transition-colors space-y-2">
                     <div className="flex items-start gap-3">
-                      <span className="w-6 h-6 rounded-full bg-indigo-600 text-white font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-6 h-6 rounded-full bg-[#D4AF37] text-black font-black text-xs flex items-center justify-center shrink-0 mt-0.5">
                         {pos.numero}
                       </span>
                       <div className="flex-1 space-y-1">

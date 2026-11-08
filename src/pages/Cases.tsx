@@ -203,7 +203,7 @@ const Cases = () => {
         {user?.role !== 'cliente' && (
           <button 
             onClick={() => setShowModal(true)}
-            className="flex items-center gap-2 px-4 py-2.5 bg-amber-500 text-slate-950 font-bold rounded-xl shadow-lg shadow-amber-500/20 hover:bg-amber-600 transition-all"
+            className="flex items-center gap-2 px-4 py-2.5 bg-[#D4AF37] text-black font-black rounded-xl shadow-md shadow-[#D4AF37]/20 hover:bg-[#E5C058] transition-all cursor-pointer"
           >
             <Plus size={18} />
             Nuevo Expediente

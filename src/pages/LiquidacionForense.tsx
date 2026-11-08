@@ -557,7 +557,7 @@ En la fecha de su presentación judicial.`;
           <button
             onClick={handleExportDocx}
             disabled={isExporting || !calculo.valido}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-700 hover:bg-blue-800 text-white font-medium text-xs shadow-sm transition-colors disabled:opacity-50 cursor-pointer"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#D4AF37] hover:bg-[#E5C058] text-black font-black text-xs shadow-md shadow-[#D4AF37]/20 transition-all disabled:opacity-50 cursor-pointer"
           >
             <Download className="w-4 h-4" />
             {isExporting ? 'Generando Word...' : 'Descargar Planilla Judicial (.docx)'}
@@ -1127,7 +1127,7 @@ En la fecha de su presentación judicial.`;
               <button
                 onClick={handleExportDocx}
                 disabled={isExporting}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-700 hover:bg-blue-800 text-white text-xs font-semibold rounded-lg shadow-sm transition-colors disabled:opacity-50 cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[#D4AF37] hover:bg-[#E5C058] text-black text-xs font-bold rounded-xl shadow-md shadow-[#D4AF37]/20 transition-all disabled:opacity-50 cursor-pointer"
               >
                 <Download className="w-3.5 h-3.5" />
                 {isExporting ? 'Descargando...' : 'Descargar en Word (.docx)'}

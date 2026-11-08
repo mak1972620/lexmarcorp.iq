@@ -34,14 +34,14 @@ const ProtectedRoute = ({ children, roles }: { children: React.ReactNode, roles?
   const { user, loading } = useAuth();
   const location = useLocation();
 
-  if (loading) return <div className="h-screen w-screen flex items-center justify-center bg-slate-950 text-amber-500">Cargando...</div>;
+  if (loading) return <div className="h-screen w-screen flex items-center justify-center bg-[#070A0F] text-[#D4AF37] font-bold">Cargando Tanaka Legal IQ...</div>;
   if (!user) return <Navigate to="/login" state={{ from: location }} replace />;
   if (roles && !roles.includes(user.role)) return <Navigate to="/dashboard" replace />;
 
   return (
-    <div className="flex h-screen bg-slate-50 overflow-hidden">
+    <div className="flex h-screen bg-[#070A0F] text-slate-100 overflow-hidden">
       <Sidebar />
-      <main className="flex-1 overflow-y-auto">
+      <main className="flex-1 overflow-y-auto bg-[#070A0F]">
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}
@@ -49,7 +49,7 @@ const ProtectedRoute = ({ children, roles }: { children: React.ReactNode, roles?
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="p-8"
+            className="p-6 md:p-8"
           >
             {children}
           </motion.div>

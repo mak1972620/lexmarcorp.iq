@@ -1,1 +1,165 @@
 @import "tailwindcss";
+
+@theme {
+  --color-gold-300: #F5DC8C;
+  --color-gold-400: #E5C058;
+  --color-gold-500: #D4AF37;
+  --color-gold-600: #B89528;
+  --color-gold-700: #8E7118;
+  --color-obsidian-950: #070A0F;
+  --color-obsidian-900: #0B0F17;
+  --color-obsidian-850: #0F1523;
+  --color-obsidian-800: #141B2D;
+  --color-obsidian-750: #182238;
+  --color-obsidian-700: #1E293B;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  background-color: #070A0F !important;
+  color: #E2E8F0 !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Scrollbar estilizado en oro y obsidiana */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #070A0F;
+}
+::-webkit-scrollbar-thumb {
+  background: #1E293B;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #D4AF37;
+}
+
+/* ==========================================================================
+   MODO DARK OBSIDIANA & ORO SUPREMO (EDILIA TANAKA Y ASOCIADOS)
+   Protección visual total para jornadas de litigio intensivas
+   ========================================================================== */
+
+/* Fondos claros a obsidiana profunda */
+.bg-white {
+  background-color: #0B0F17 !important;
+  color: #E2E8F0 !important;
+}
+
+.bg-slate-50, 
+.bg-slate-100,
+.bg-gray-50,
+.bg-gray-100 {
+  background-color: #070A0F !important;
+  color: #E2E8F0 !important;
+}
+
+.bg-slate-200,
+.bg-gray-200 {
+  background-color: #141B2D !important;
+}
+
+/* Bordes en escala obsidiana y acentos oro */
+.border-slate-100,
+.border-slate-200,
+.border-slate-300,
+.border-gray-100,
+.border-gray-200,
+.border-gray-300 {
+  border-color: #1E293B !important;
+}
+
+/* Textos oscuros a blanco y oro */
+.text-slate-900,
+.text-slate-800,
+.text-gray-900,
+.text-gray-800 {
+  color: #F8FAFC !important;
+}
+
+.text-slate-700,
+.text-slate-600,
+.text-gray-700,
+.text-gray-600 {
+  color: #CBD5E1 !important;
+}
+
+.text-slate-500,
+.text-slate-400,
+.text-gray-500,
+.text-gray-400 {
+  color: #94A3B8 !important;
+}
+
+/* Reemplazo de tonalidades naranjas/ámbar por ORO PURO */
+.text-amber-500,
+.text-amber-600,
+.text-amber-400,
+.text-orange-500,
+.text-orange-600 {
+  color: #D4AF37 !important;
+}
+
+.border-amber-500,
+.border-amber-600,
+.border-amber-400,
+.border-amber-500\/20,
+.border-amber-500\/30,
+.border-amber-500\/40,
+.border-amber-500\/50 {
+  border-color: rgba(212, 175, 55, 0.4) !important;
+}
+
+/* UNIFORMIDAD EN BOTONES: Todos los botones de acción en ORO PURO con texto negro */
+button[type="submit"],
+.btn-primary,
+button.bg-amber-500,
+button.bg-amber-600,
+button.bg-blue-600,
+button.bg-indigo-600,
+button.bg-emerald-600 {
+  background-color: #D4AF37 !important;
+  color: #070A0F !important;
+  font-weight: 700 !important;
+  border-color: transparent !important;
+  box-shadow: 0 4px 14px 0 rgba(212, 175, 55, 0.25) !important;
+}
+
+button[type="submit"]:hover,
+.btn-primary:hover,
+button.bg-amber-500:hover,
+button.bg-amber-600:hover,
+button.bg-blue-600:hover,
+button.bg-indigo-600:hover,
+button.bg-emerald-600:hover {
+  background-color: #E5C058 !important;
+  color: #000000 !important;
+  box-shadow: 0 6px 20px 0 rgba(212, 175, 55, 0.45) !important;
+}
+
+/* Inputs, Textareas y Selects en Dark Mode */
+input, select, textarea {
+  background-color: #070A0F !important;
+  color: #F8FAFC !important;
+  border-color: #1E293B !important;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #D4AF37 !important;
+  box-shadow: 0 0 0 1px #D4AF37 !important;
+}
+
+input::placeholder, textarea::placeholder {
+  color: #475569 !important;
+}
+
+/* Modales y Paneles Flotantes */
+.shadow-sm, .shadow-md, .shadow-lg, .shadow-xl, .shadow-2xl {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.7), 0 8px 10px -6px rgba(0, 0, 0, 0.7) !important;
+}

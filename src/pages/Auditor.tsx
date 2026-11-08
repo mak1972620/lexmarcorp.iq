@@ -378,12 +378,12 @@ const Auditor = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-3 mb-2">
-            <div className="p-2 bg-amber-500/10 text-amber-600 rounded-lg">
+            <div className="p-2 bg-[#D4AF37]/15 text-[#D4AF37] rounded-xl border border-[#D4AF37]/30">
               <BrainCircuit size={24} />
             </div>
-            <h1 id="auditor-title-header" className="text-2xl font-bold text-slate-900">Tanaka Legal IQ</h1>
+            <h1 id="auditor-title-header" className="text-2xl md:text-3xl font-black text-[#D4AF37] font-serif">Tanaka Legal IQ</h1>
           </div>
-          <p className="text-slate-500">Auditor Forense Jurídico Senior - Especialista en Coahuila</p>
+          <p className="text-slate-400 text-xs md:text-sm">Auditor Forense Jurídico Senior • Especialista en Legislación de Coahuila</p>
         </div>
 
         <div className="flex items-center gap-3">
@@ -398,9 +398,9 @@ const Auditor = () => {
             id="btn-upload-file"
             onClick={() => fileInputRef.current?.click()}
             disabled={uploading}
-            className="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 text-slate-700 font-semibold rounded-xl shadow-sm hover:bg-slate-50 transition-all disabled:opacity-50"
+            className="flex items-center gap-2 px-4 py-2.5 bg-[#0B0F17] border border-[#D4AF37]/40 text-[#D4AF37] hover:bg-[#D4AF37]/15 font-bold rounded-xl shadow-md transition-all disabled:opacity-50 cursor-pointer"
           >
-            {uploading ? <Loader2 size={18} className="animate-spin" /> : <Upload size={18} className="text-amber-500" />}
+            {uploading ? <Loader2 size={18} className="animate-spin text-[#D4AF37]" /> : <Upload size={18} className="text-[#D4AF37]" />}
             Subir Escrito (Word/TXT)
           </button>
         </div>
@@ -410,19 +410,19 @@ const Auditor = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Left Input Section */}
         <div className="space-y-6">
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
-            <h2 id="auditor-input-heading" className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-              <FileSearch size={20} className="text-slate-400" />
+          <div className="bg-[#0B0F17] rounded-2xl border border-[#1E293B] shadow-xl p-6">
+            <h2 id="auditor-input-heading" className="text-base font-bold text-[#D4AF37] mb-4 flex items-center gap-2 font-serif">
+              <FileSearch size={20} className="text-[#D4AF37]" />
               Documento a Auditar
             </h2>
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Materia del Escrito</label>
+                <label className="block text-xs font-bold text-[#D4AF37] uppercase tracking-wider mb-1.5">Materia del Escrito</label>
                 <select
                   value={materia}
                   onChange={(e) => setMateria(e.target.value)}
-                  className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all outline-none text-slate-900"
+                  className="w-full px-4 py-2.5 bg-[#070A0F] border border-[#1E293B] rounded-xl focus:border-[#D4AF37] transition-all outline-none text-slate-100 text-sm"
                 >
                   <option value="Civil">Civil</option>
                   <option value="Familiar">Familiar</option>
@@ -433,12 +433,12 @@ const Auditor = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Texto del Documento</label>
+                <label className="block text-xs font-bold text-[#D4AF37] uppercase tracking-wider mb-1.5">Texto del Documento</label>
                 <textarea
                   value={documentText}
                   onChange={(e) => setDocumentText(e.target.value)}
                   placeholder="Pega aquí el contenido de tu demanda, contestación, agravios, acusación, etc..."
-                  className="w-full h-96 px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all outline-none resize-none font-mono text-sm text-slate-800"
+                  className="w-full h-96 px-4 py-3 bg-[#070A0F] border border-[#1E293B] rounded-xl focus:border-[#D4AF37] transition-all outline-none resize-none font-mono text-xs text-slate-200 placeholder:text-slate-600"
                 />
               </div>
 
@@ -446,16 +446,16 @@ const Auditor = () => {
                 id="btn-run-audit"
                 onClick={handleAudit}
                 disabled={loading || !documentText.trim()}
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-slate-950 text-white font-bold rounded-xl shadow-lg hover:bg-slate-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full flex items-center justify-center gap-2 px-4 py-3.5 bg-[#D4AF37] hover:bg-[#E5C058] text-black font-black rounded-xl shadow-lg shadow-[#D4AF37]/25 transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer tracking-wide text-sm"
               >
                 {loading ? (
                   <>
-                    <Loader2 size={18} className="animate-spin" />
+                    <Loader2 size={18} className="animate-spin text-black" />
                     Analizando Silogismo Jurídico...
                   </>
                 ) : (
                   <>
-                    <ShieldAlert size={18} className="text-amber-500" />
+                    <ShieldAlert size={18} className="text-black" />
                     Ejecutar Auditoría Forense
                   </>
                 )}
@@ -541,7 +541,7 @@ const Auditor = () => {
                             setActiveTab('shield');
                             handleShield();
                           }}
-                          className="flex items-center gap-1.5 px-4 py-2 bg-slate-950 hover:bg-slate-800 text-white rounded-lg text-xs font-bold shadow-sm shrink-0 whitespace-nowrap transition-all"
+                          className="flex items-center gap-1.5 px-4 py-2.5 bg-[#D4AF37] hover:bg-[#E5C058] text-black rounded-xl text-xs font-bold shadow-md shadow-[#D4AF37]/20 shrink-0 whitespace-nowrap transition-all cursor-pointer"
                         >
                           Generar Escrito Blindado
                           <ChevronRight size={14} />
@@ -552,19 +552,19 @@ const Auditor = () => {
                     /* SHIELDED / CORRECTED LEGAL WRITING TAB */
                     <div id="tab-content-shield" className="flex-1 flex flex-col space-y-4">
                       {shieldedLoading ? (
-                        <div className="flex-1 h-[450px] bg-slate-50 rounded-xl border border-slate-100 flex flex-col items-center justify-center space-y-4 text-slate-400">
-                          <Loader2 size={40} className="animate-spin text-amber-500" />
-                          <p className="text-sm font-black text-slate-800">Reescribiendo Escrito Legal...</p>
-                          <p className="text-xs text-slate-500 max-w-sm text-center">
+                        <div className="flex-1 h-[450px] bg-[#070A0F] rounded-xl border border-[#1E293B] flex flex-col items-center justify-center space-y-4 text-slate-400">
+                          <Loader2 size={40} className="animate-spin text-[#D4AF37]" />
+                          <p className="text-sm font-black text-[#D4AF37]">Reescribiendo Escrito Legal...</p>
+                          <p className="text-xs text-slate-400 max-w-sm text-center">
                             Aplicando Silogismo de Juez, subsanando oscuridad procesal y fundamentando con el Código de Coahuila...
                           </p>
                         </div>
                       ) : shieldedText ? (
                         <>
                           {/* Options Toolbar */}
-                          <div className="flex flex-wrap gap-2 items-center justify-between bg-slate-50 p-2 rounded-xl border border-slate-200">
-                            <span className="text-xs font-bold text-slate-500 px-2 flex items-center gap-1">
-                              <BadgeCheck size={14} className="text-emerald-500" />
+                          <div className="flex flex-wrap gap-2 items-center justify-between bg-[#070A0F] p-2.5 rounded-xl border border-[#1E293B]">
+                            <span className="text-xs font-bold text-[#D4AF37] px-2 flex items-center gap-1.5">
+                              <BadgeCheck size={15} className="text-[#D4AF37]" />
                               Versión Corregida e Inmune
                             </span>
                             <div className="flex items-center gap-2">
@@ -572,10 +572,10 @@ const Auditor = () => {
                               <button
                                 onClick={handleDownloadDocx}
                                 disabled={downloadingDocx}
-                                className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all disabled:opacity-50"
+                                className="px-3.5 py-2 bg-[#D4AF37] hover:bg-[#E5C058] text-black rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-md shadow-[#D4AF37]/20 transition-all disabled:opacity-50 cursor-pointer"
                                 title="Descargar como documento Word con formato judicial de juzgado (.docx)"
                               >
-                                {downloadingDocx ? <Loader2 size={14} className="animate-spin" /> : <FileText size={14} />}
+                                {downloadingDocx ? <Loader2 size={14} className="animate-spin text-black" /> : <FileText size={14} />}
                                 <span>{downloadingDocx ? 'Generando...' : 'Descargar Word (.docx)'}</span>
                               </button>
                               {/* Copy */}

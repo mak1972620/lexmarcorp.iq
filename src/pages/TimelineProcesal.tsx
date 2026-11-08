@@ -347,9 +347,9 @@ export default function TimelineProcesal() {
           <button
             onClick={handleGenerarReporteAI}
             disabled={loadingAI || milestones.length === 0}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-sm transition-colors disabled:opacity-50 cursor-pointer"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#D4AF37] hover:bg-[#E5C058] text-black font-black text-xs shadow-md shadow-[#D4AF37]/20 transition-all disabled:opacity-50 cursor-pointer"
           >
-            {loadingAI ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4 text-amber-300" />}
+            {loadingAI ? <RefreshCw className="w-4 h-4 animate-spin text-black" /> : <Sparkles className="w-4 h-4 text-black" />}
             {loadingAI ? 'Generando Informe...' : 'Generar Reporte Cliente (IA)'}
           </button>
         </div>
@@ -471,7 +471,7 @@ export default function TimelineProcesal() {
             </span>
             <button
               onClick={() => setShowAddForm(!showAddForm)}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs shadow-sm transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#D4AF37] hover:bg-[#E5C058] text-black font-bold text-xs shadow-md shadow-[#D4AF37]/20 transition-all cursor-pointer"
             >
               <Plus className="w-3.5 h-3.5" />
               {showAddForm ? 'Cerrar Formulario' : 'Registrar Nuevo Hito'}
@@ -557,7 +557,7 @@ export default function TimelineProcesal() {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-1.5 rounded bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-sm"
+                  className="px-4 py-1.5 rounded-xl bg-[#D4AF37] hover:bg-[#E5C058] text-black text-xs font-bold shadow-md shadow-[#D4AF37]/20 cursor-pointer"
                 >
                   Guardar Hito
                 </button>
@@ -679,7 +679,7 @@ export default function TimelineProcesal() {
                 <button
                   onClick={handleGenerarReporteAI}
                   disabled={loadingAI || milestones.length === 0}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#D4AF37] hover:bg-[#E5C058] text-black font-black text-xs shadow-md shadow-[#D4AF37]/20 transition-all cursor-pointer"
                 >
                   {loadingAI ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
                   Generar Reporte Ahora

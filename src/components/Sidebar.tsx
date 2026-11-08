@@ -24,6 +24,8 @@ import {
 import { useAuth } from '../context/AuthContext';
 import { cn } from '../types';
 
+import { TanakaLogo } from './TanakaLogo';
+
 const Sidebar = () => {
   const { user, logout } = useAuth();
 
@@ -50,45 +52,27 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="w-64 bg-slate-950 text-white h-screen flex flex-col border-r border-amber-500/20 shadow-2xl">
-      <div className="p-5 flex items-center gap-3 border-b border-amber-500/20 bg-gradient-to-b from-slate-900 to-slate-950">
-        <div className="w-13 h-13 rounded-xl flex items-center justify-center overflow-hidden border border-amber-500/40 bg-black shadow-md shadow-amber-500/10">
-          <img 
-            src="/logo_tanaka.png" 
-            alt="Edilia Tanaka Logo" 
-            className="w-full h-full object-cover"
-            onError={(e) => { e.currentTarget.src = '/logo.png'; }}
-          />
-        </div>
-        <div className="min-w-0 flex-1">
-          <h1 className="font-black text-sm md:text-base leading-tight tracking-wider text-amber-400 truncate">
-            EDILIA TANAKA
-          </h1>
-          <p className="text-[10px] text-amber-200/90 font-bold tracking-widest uppercase">
-            Y ASOCIADOS
-          </p>
-          <span className="text-[9px] text-slate-400 italic block truncate mt-0.5">
-            "La Abogada de Tu Familia"
-          </span>
-        </div>
+    <div className="w-64 bg-[#070A0F] text-slate-200 h-screen flex flex-col border-r border-[#D4AF37]/20 shadow-2xl">
+      <div className="p-4 border-b border-[#D4AF37]/20 bg-gradient-to-b from-[#0B0F17] to-[#070A0F]">
+        <TanakaLogo size="md" showText={true} />
       </div>
 
-      <div className="flex-1 overflow-y-auto py-6 px-4 space-y-8">
+      <div className="flex-1 overflow-y-auto py-5 px-3 space-y-7">
         <div>
-          <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-4 px-2">Principal</p>
+          <p className="text-[10px] font-bold text-[#D4AF37]/70 uppercase tracking-widest mb-3 px-3">Módulos Jurídicos</p>
           <nav className="space-y-1">
             {menuItems.filter(item => item.roles.includes(user?.role || '')).map((item) => (
               <NavLink
                 key={item.path}
                 to={item.path}
                 className={({ isActive }) => cn(
-                  "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all duration-200",
+                  "flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium transition-all duration-200",
                   isActive 
-                    ? "bg-amber-500 text-slate-950 font-semibold shadow-lg shadow-amber-500/20" 
-                    : "text-slate-400 hover:text-white hover:bg-white/5"
+                    ? "bg-[#D4AF37] text-black font-bold shadow-lg shadow-[#D4AF37]/25" 
+                    : "text-slate-300 hover:text-[#D4AF37] hover:bg-[#D4AF37]/10"
                 )}
               >
-                <item.icon size={18} />
+                <item.icon size={17} className={cn("transition-colors")} />
                 {item.label}
               </NavLink>
             ))}
@@ -97,20 +81,20 @@ const Sidebar = () => {
 
         {user?.role === 'admin' && (
           <div>
-            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-4 px-2">Administración</p>
+            <p className="text-[10px] font-bold text-[#D4AF37]/70 uppercase tracking-widest mb-3 px-3">Control & Gobierno</p>
             <nav className="space-y-1">
               {adminItems.map((item) => (
                 <NavLink
                   key={item.path}
                   to={item.path}
                   className={({ isActive }) => cn(
-                    "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all duration-200",
+                    "flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium transition-all duration-200",
                     isActive 
-                      ? "bg-amber-500 text-slate-950 font-semibold shadow-lg shadow-amber-500/20" 
-                      : "text-slate-400 hover:text-white hover:bg-white/5"
+                      ? "bg-[#D4AF37] text-black font-bold shadow-lg shadow-[#D4AF37]/25" 
+                      : "text-slate-300 hover:text-[#D4AF37] hover:bg-[#D4AF37]/10"
                   )}
                 >
-                  <item.icon size={18} />
+                  <item.icon size={17} />
                   {item.label}
                 </NavLink>
               ))}
@@ -119,27 +103,27 @@ const Sidebar = () => {
         )}
       </div>
 
-      <div className="p-4 border-t border-white/5">
+      <div className="p-3 border-t border-[#D4AF37]/20 bg-[#0B0F17]/60">
         <NavLink 
           to="/perfil"
           className={({ isActive }) => cn(
-            "flex items-center gap-3 px-3 py-3 mb-2 rounded-lg transition-colors",
-            isActive ? "bg-white/10" : "hover:bg-white/5"
+            "flex items-center gap-3 px-3 py-2.5 mb-1.5 rounded-xl transition-colors",
+            isActive ? "bg-[#D4AF37]/20 text-[#D4AF37]" : "hover:bg-white/5 text-slate-300"
           )}
         >
-          <div className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center border border-white/10">
-            <UserCircle size={16} className="text-amber-500" />
+          <div className="w-8 h-8 rounded-full bg-[#070A0F] flex items-center justify-center border border-[#D4AF37]/40">
+            <UserCircle size={18} className="text-[#D4AF37]" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-semibold truncate text-white">{user?.name}</p>
-            <p className="text-[10px] text-slate-400 capitalize">{user?.role}</p>
+            <p className="text-xs font-bold truncate text-[#D4AF37]">{user?.name}</p>
+            <p className="text-[10px] text-slate-400 capitalize">{user?.role === 'admin' ? 'Titular / Administradora' : user?.role}</p>
           </div>
         </NavLink>
         <button 
           onClick={logout}
-          className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-red-400 hover:bg-red-400/10 transition-colors"
+          className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-red-400 hover:bg-red-500/10 transition-colors"
         >
-          <LogOut size={18} />
+          <LogOut size={16} />
           Cerrar Sesión
         </button>
       </div>

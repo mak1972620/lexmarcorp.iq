@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Scale, User, Mail, Lock, ArrowRight, Shield } from 'lucide-react';
 
+import { TanakaLogo } from '../components/TanakaLogo';
+
 const Register = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -59,26 +61,15 @@ const Register = () => {
       </div>
 
       {/* Right: Form */}
-      <div className="flex-1 flex flex-col justify-center px-8 sm:px-12 lg:px-24 xl:px-32 bg-white">
-        <div className="max-w-md w-full mx-auto">
-          <div className="flex items-center gap-3 mb-12">
-            <div className="w-16 h-16 rounded-xl flex items-center justify-center overflow-hidden bg-transparent">
-              <img 
-                src="/logo.png" 
-                alt="Logo Edilia Tanaka" 
-                className="w-full h-full object-contain"
-                onError={(e) => { e.currentTarget.src = 'https://ui-avatars.com/api/?name=ET&background=d97706&color=fff&font-size=0.7&bold=true'; }}
-              />
-            </div>
-            <div>
-              <h1 className="text-xl font-black text-amber-500 tracking-tight">EDILIA TANAKA</h1>
-              <p className="text-[10px] text-amber-400 font-bold uppercase tracking-widest">Y ASOCIADOS • LEGAL IQ</p>
-            </div>
+      <div className="flex-1 flex flex-col justify-center px-8 sm:px-12 lg:px-24 xl:px-32 bg-[#070A0F] text-slate-100">
+        <div className="max-w-md w-full mx-auto py-8">
+          <div className="mb-8">
+            <TanakaLogo size="xl" showText={true} />
           </div>
 
-          <div className="mb-10">
-            <h2 className="text-3xl font-bold text-slate-900 mb-2">Crear Cuenta</h2>
-            <p className="text-slate-500">Completa el formulario para registrarte en el sistema.</p>
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-[#D4AF37] mb-1 font-serif">Crear Cuenta</h2>
+            <p className="text-xs text-slate-400">Portal Jurídico • Edilia Tanaka y Asociados</p>
           </div>
 
           {error && (

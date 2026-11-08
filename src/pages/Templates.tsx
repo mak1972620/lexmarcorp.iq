@@ -782,7 +782,7 @@ export default function Templates() {
                     <button
                       onClick={handleDownloadDocx}
                       disabled={downloadingDocx}
-                      className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold transition shadow-sm disabled:opacity-50"
+                      className="flex items-center gap-1.5 px-3 py-1.5 bg-[#D4AF37] hover:bg-[#E5C058] text-black rounded-xl text-xs font-bold transition shadow-md shadow-[#D4AF37]/20 disabled:opacity-50 cursor-pointer"
                       title="Descargar como Word (.docx) con formato judicial oficial"
                     >
                       {downloadingDocx ? (
@@ -855,7 +855,7 @@ export default function Templates() {
                     <button
                       onClick={handleDownloadDocx}
                       disabled={downloadingDocx}
-                      className="flex items-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold shadow-sm transition-all disabled:opacity-50 active:scale-[0.98]"
+                      className="flex items-center gap-1.5 px-4 py-2 bg-[#D4AF37] hover:bg-[#E5C058] text-black rounded-xl text-xs font-bold shadow-md shadow-[#D4AF37]/20 transition-all disabled:opacity-50 active:scale-[0.98] cursor-pointer"
                     >
                       <Download size={14} />
                       <span>{downloadingDocx ? 'GENERANDO WORD...' : 'DESCARGAR WORD (.DOCX)'}</span>

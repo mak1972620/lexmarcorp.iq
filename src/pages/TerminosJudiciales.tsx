@@ -285,7 +285,7 @@ Tanaka Legal IQ - Sistema de Blindaje Procesal`;
             <button
               onClick={handleExportDocx}
               disabled={isExporting}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-700 hover:bg-blue-800 text-white font-medium text-xs shadow-sm transition-colors disabled:opacity-50 cursor-pointer"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#D4AF37] hover:bg-[#E5C058] text-black font-black text-xs shadow-md shadow-[#D4AF37]/20 transition-all disabled:opacity-50 cursor-pointer"
             >
               <Download className="w-4 h-4" />
               {isExporting ? 'Generando...' : 'Descargar Certificación (.docx)'}
@@ -469,7 +469,7 @@ Tanaka Legal IQ - Sistema de Blindaje Procesal`;
               <button
                 onClick={handleAgendarTarea}
                 disabled={isSavingTask}
-                className="shrink-0 inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-emerald-400 font-bold text-xs border border-emerald-500/40 shadow transition-all cursor-pointer"
+                className="shrink-0 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#D4AF37] hover:bg-[#E5C058] text-black font-black text-xs shadow-md shadow-[#D4AF37]/20 transition-all cursor-pointer"
               >
                 {taskSavedSuccess ? (
                   <>
