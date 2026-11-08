@@ -2027,24 +2027,23 @@ Por favor, redacta el Informe Ejecutivo para el cliente con la estructura requer
     res.json({ received: true });
   });
 
-  // Vite middleware for development
-  if (process.env.NODE_ENV !== "production") {
-    const vite = await createViteServer({
-      server: { 
-        middlewareMode: true,
-        allowedHosts: true,
-        hmr: {
-          port: 0 // dynamically allocate port
-        }
-      },
-      appType: "spa",
-    });
-    app.use(vite.middlewares);
-  } else {
+  // Serve static dist if built, otherwise use Vite middleware without HMR websocket errors
+  const hasDist = fs.existsSync(path.join(__dirname, "dist", "index.html"));
+  if (process.env.NODE_ENV === "production" && hasDist) {
     app.use(express.static(path.join(__dirname, "dist")));
     app.get("*", (req, res) => {
       res.sendFile(path.join(__dirname, "dist", "index.html"));
     });
+  } else {
+    const vite = await createViteServer({
+      server: { 
+        middlewareMode: true,
+        allowedHosts: true,
+        hmr: false // Disable HMR websocket to prevent remote connection lost popups
+      },
+      appType: "spa",
+    });
+    app.use(vite.middlewares);
   }
 
   // Global API Error Handler
