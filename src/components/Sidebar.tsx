@@ -4,130 +4,171 @@ import {
   LayoutDashboard, 
   Users, 
   Briefcase, 
+  GitCommit, 
   CheckSquare, 
   FileText, 
-  MessageSquare, 
-  CreditCard, 
-  ShieldCheck, 
-  History,
+  BookOpen, 
+  Cpu, 
+  Calculator, 
+  Brain, 
   LogOut,
-  Scale,
-  BrainCircuit,
-  ScanText,
-  UserCircle,
-  Scroll,
-  Calculator,
-  Swords,
-  Clock,
-  GitCommit
+  ShieldCheck,
+  History,
+  MessageSquare,
+  CreditCard
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { cn } from '../types';
 
-import { TanakaLogo } from './TanakaLogo';
-
 const Sidebar = () => {
   const { user, logout } = useAuth();
 
-  const menuItems = [
+  const navItems = [
     { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard', roles: ['admin', 'abogado', 'cliente'] },
     { icon: Users, label: 'Clientes', path: '/clientes', roles: ['admin', 'abogado'] },
     { icon: Briefcase, label: 'Expedientes', path: '/expedientes', roles: ['admin', 'abogado', 'cliente'] },
     { icon: GitCommit, label: 'Tracking Procesal', path: '/timeline', roles: ['admin', 'abogado', 'cliente'] },
-    { icon: CheckSquare, label: 'Tareas', path: '/tareas', roles: ['admin', 'abogado', 'cliente'] },
+    { icon: CheckSquare, label: 'Tareas Pospuestas', path: '/tareas', roles: ['admin', 'abogado', 'cliente'] },
     { icon: FileText, label: 'Documentos', path: '/documentos', roles: ['admin', 'abogado', 'cliente'] },
-    { icon: Scroll, label: 'Biblioteca de Plantillas', path: '/plantillas', roles: ['admin', 'abogado'] },
+    { icon: BookOpen, label: 'Plantillas Legales', path: '/plantillas', roles: ['admin', 'abogado'] },
+  ];
+
+  const executiveTools = [
+    { icon: Cpu, label: 'Redactor Legal IA', path: '/auditor', roles: ['admin', 'abogado'] },
+    { icon: Calculator, label: 'Auditoría Fiscal', path: '/liquidacion', roles: ['admin', 'abogado'] },
+    { icon: Brain, label: 'Peritaje Psicológico', path: '/duelo-procesal', roles: ['admin', 'abogado'] },
     { icon: MessageSquare, label: 'Mensajes', path: '/mensajes', roles: ['admin', 'abogado', 'cliente'] },
-    { icon: CreditCard, label: 'Pagos', path: '/pagos', roles: ['admin', 'abogado', 'cliente'] },
-    { icon: ScanText, label: 'Visión Legal', path: '/scanner', roles: ['admin', 'abogado', 'cliente'] },
-    { icon: BrainCircuit, label: 'Tanaka Legal IQ', path: '/auditor', roles: ['admin', 'abogado'] },
-    { icon: Swords, label: 'Duelo Procesal', path: '/duelo-procesal', roles: ['admin', 'abogado'] },
-    { icon: Clock, label: 'Términos Judiciales', path: '/terminos', roles: ['admin', 'abogado', 'cliente'] },
-    { icon: Calculator, label: 'Liquidación & Usura', path: '/liquidacion', roles: ['admin', 'abogado'] },
+    { icon: CreditCard, label: 'Honorarios & Pagos', path: '/pagos', roles: ['admin', 'abogado', 'cliente'] },
   ];
 
   const adminItems = [
     { icon: ShieldCheck, label: 'Usuarios', path: '/admin/usuarios', roles: ['admin'] },
-    { icon: History, label: 'Auditoría', path: '/admin/auditoria', roles: ['admin'] },
+    { icon: History, label: 'Auditoría Forense', path: '/admin/auditoria', roles: ['admin'] },
   ];
 
   return (
-    <div className="w-64 bg-[#070A0F] text-slate-200 h-screen flex flex-col border-r border-[#D4AF37]/20 shadow-2xl">
-      <div className="p-4 border-b border-[#D4AF37]/20 bg-gradient-to-b from-[#0B0F17] to-[#070A0F]">
-        <TanakaLogo size="md" showText={true} />
-      </div>
-
-      <div className="flex-1 overflow-y-auto py-5 px-3 space-y-7">
-        <div>
-          <p className="text-[10px] font-bold text-[#D4AF37]/70 uppercase tracking-widest mb-3 px-3">Módulos Jurídicos</p>
-          <nav className="space-y-1">
-            {menuItems.filter(item => item.roles.includes(user?.role || '')).map((item) => (
-              <NavLink
-                key={item.path}
-                to={item.path}
-                className={({ isActive }) => cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium transition-all duration-200",
-                  isActive 
-                    ? "bg-[#D4AF37] text-black font-bold shadow-lg shadow-[#D4AF37]/25" 
-                    : "text-slate-300 hover:text-[#D4AF37] hover:bg-[#D4AF37]/10"
-                )}
-              >
-                <item.icon size={17} className={cn("transition-colors")} />
-                {item.label}
-              </NavLink>
-            ))}
-          </nav>
+    <aside className="w-[270px] bg-[#040507] border-r border-[#D4AF37]/22 flex flex-col justify-between p-6 h-screen z-50 shrink-0 select-none">
+      <div className="overflow-y-auto pr-1">
+        {/* BRAND HEADER */}
+        <div className="flex items-center gap-3 pb-5 border-b border-[#D4AF37]/15">
+          <div className="w-11 h-11 bg-[#D4AF37]/10 border border-[#D4AF37] rounded-lg flex items-center justify-center text-[#D4AF37] font-['Cinzel'] font-bold text-lg shadow-[0_0_15px_rgba(212,175,55,0.15)] shrink-0">
+            ET
+          </div>
+          <div className="min-w-0">
+            <h2 className="font-['Cinzel'] text-sm tracking-[1px] text-gold-gradient font-bold uppercase truncate">
+              Edilia Tanaka
+            </h2>
+            <p className="text-[9px] text-[#8E95A5] tracking-[0.5px] uppercase mt-0.5 truncate">
+              Firma Legal & Asociados
+            </p>
+          </div>
         </div>
 
-        {user?.role === 'admin' && (
-          <div>
-            <p className="text-[10px] font-bold text-[#D4AF37]/70 uppercase tracking-widest mb-3 px-3">Control & Gobierno</p>
-            <nav className="space-y-1">
-              {adminItems.map((item) => (
+        {/* NAVEGACIÓN PRINCIPAL */}
+        <div className="mt-6">
+          <div className="text-[10px] text-[#5C6270] tracking-[1.5px] uppercase font-bold mb-3 pl-3">
+            Principal
+          </div>
+          <ul className="flex flex-col gap-1 list-none p-0 m-0">
+            {navItems.filter(item => item.roles.includes(user?.role || '')).map((item) => (
+              <li key={item.path}>
                 <NavLink
-                  key={item.path}
                   to={item.path}
                   className={({ isActive }) => cn(
-                    "flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium transition-all duration-200",
+                    "flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-[13px] font-medium transition-all duration-200",
                     isActive 
-                      ? "bg-[#D4AF37] text-black font-bold shadow-lg shadow-[#D4AF37]/25" 
-                      : "text-slate-300 hover:text-[#D4AF37] hover:bg-[#D4AF37]/10"
+                      ? "bg-gradient-to-r from-[#D4AF37]/15 to-transparent border-l-[3px] border-[#D4AF37] text-[#FFF3A7] font-semibold" 
+                      : "text-[#8E95A5] hover:text-[#F3F4F6] hover:bg-white/[0.03]"
                   )}
                 >
-                  <item.icon size={17} />
-                  {item.label}
+                  <item.icon size={18} className="shrink-0" />
+                  <span>{item.label}</span>
                 </NavLink>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* HERRAMIENTAS EJECUTIVAS */}
+        <div className="mt-6">
+          <div className="text-[10px] text-[#5C6270] tracking-[1.5px] uppercase font-bold mb-3 pl-3">
+            Herramientas Ejecutivas
+          </div>
+          <ul className="flex flex-col gap-1 list-none p-0 m-0">
+            {executiveTools.filter(item => item.roles.includes(user?.role || '')).map((item) => (
+              <li key={item.path}>
+                <NavLink
+                  to={item.path}
+                  className={({ isActive }) => cn(
+                    "flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-[13px] font-medium transition-all duration-200",
+                    isActive 
+                      ? "bg-gradient-to-r from-[#D4AF37]/15 to-transparent border-l-[3px] border-[#D4AF37] text-[#FFF3A7] font-semibold" 
+                      : "text-[#8E95A5] hover:text-[#F3F4F6] hover:bg-white/[0.03]"
+                  )}
+                >
+                  <item.icon size={18} className="shrink-0 text-[#D4AF37]" />
+                  <span>{item.label}</span>
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* ADMINISTRACIÓN */}
+        {user?.role === 'admin' && (
+          <div className="mt-6">
+            <div className="text-[10px] text-[#5C6270] tracking-[1.5px] uppercase font-bold mb-3 pl-3">
+              Control & Gobierno
+            </div>
+            <ul className="flex flex-col gap-1 list-none p-0 m-0">
+              {adminItems.map((item) => (
+                <li key={item.path}>
+                  <NavLink
+                    to={item.path}
+                    className={({ isActive }) => cn(
+                      "flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-[13px] font-medium transition-all duration-200",
+                      isActive 
+                        ? "bg-gradient-to-r from-[#D4AF37]/15 to-transparent border-l-[3px] border-[#D4AF37] text-[#FFF3A7] font-semibold" 
+                        : "text-[#8E95A5] hover:text-[#F3F4F6] hover:bg-white/[0.03]"
+                    )}
+                  >
+                    <item.icon size={18} className="shrink-0 text-[#D4AF37]" />
+                    <span>{item.label}</span>
+                  </NavLink>
+                </li>
               ))}
-            </nav>
+            </ul>
           </div>
         )}
       </div>
 
-      <div className="p-3 border-t border-[#D4AF37]/20 bg-[#0B0F17]/60">
+      {/* USER PROFILE FOOTER */}
+      <div className="pt-4 mt-auto border-t border-[#D4AF37]/15">
         <NavLink 
           to="/perfil"
-          className={({ isActive }) => cn(
-            "flex items-center gap-3 px-3 py-2.5 mb-1.5 rounded-xl transition-colors",
-            isActive ? "bg-[#D4AF37]/20 text-[#D4AF37]" : "hover:bg-white/5 text-slate-300"
-          )}
+          className="flex items-center gap-3 p-3 bg-white/[0.02] border border-[#D4AF37]/22 rounded-xl hover:border-[#D4AF37] transition-all group"
         >
-          <div className="w-8 h-8 rounded-full bg-[#070A0F] flex items-center justify-center border border-[#D4AF37]/40">
-            <UserCircle size={18} className="text-[#D4AF37]" />
+          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#BF953F] via-[#FCF6BA] to-[#AA771C] flex items-center justify-center text-black font-bold text-xs shrink-0 shadow-sm">
+            ET
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-bold truncate text-[#D4AF37]">{user?.name}</p>
-            <p className="text-[10px] text-slate-400 capitalize">{user?.role === 'admin' ? 'Titular / Administradora' : user?.role}</p>
+            <h4 className="text-xs text-[#F3F4F6] font-semibold truncate group-hover:text-[#FFF3A7] transition-colors">
+              {user?.name || 'Lic. Dora Edilia Tanaka'}
+            </h4>
+            <p className="text-[10px] text-[#D4AF37] truncate font-medium">
+              {user?.role === 'admin' ? 'Socia Directora' : (user?.role || 'Abogada Titular')}
+            </p>
           </div>
         </NavLink>
         <button 
           onClick={logout}
-          className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-red-400 hover:bg-red-500/10 transition-colors"
+          className="w-full mt-2 flex items-center justify-center gap-2 py-2 text-xs text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 rounded-lg transition-colors cursor-pointer"
         >
-          <LogOut size={16} />
+          <LogOut size={14} />
           Cerrar Sesión
         </button>
       </div>
-    </div>
+    </aside>
   );
 };
 
